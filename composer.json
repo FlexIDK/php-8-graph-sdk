@@ -1,0 +1,41 @@
+{
+    "name": "one23/php-8-graph-sdk",
+    "type": "library",
+    "homepage": "https://github.com/FlexIDK/php-8-graph-sdk",
+    "description": "Facebook SDK for PHP 8",
+    "version": "1.0.0",
+    "keywords": [
+        "facebook",
+        "sdk",
+        "php 8"
+    ],
+    "authors": [
+        {
+            "name": "Facebook",
+            "homepage": "https://github.com/facebook/php-graph-sdk/contributors"
+        },
+        {
+            "name": "Eugene Krivoruchko",
+            "homepage": "https://github.com/FlexIDK/"
+        }
+    ],
+    "require": {
+        "php": "~8.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "ext-hash": "*",
+        "ext-openssl": "*",
+        "ext-curl": "*",
+        "ext-phalcon": "~5",
+        "ext-mcrypt": "*",
+        "guzzlehttp/guzzle": "~7",
+        "laravel/framework": "~v9"
+    },
+    "autoload": {
+        "psr-4": {
+            "One23\\GraphSdk\\": "src/"
+        },
+        "files": ["src/polyfills.php"]
+    }
+}
