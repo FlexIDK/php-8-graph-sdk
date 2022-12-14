@@ -2,18 +2,28 @@
 
 namespace One23\GraphSdk\Exceptions;
 
+use One23\GraphSdk\MapTypeTrait;
 use One23\GraphSdk\Response;
 
 class ResponseException extends SDKException
 {
+    use MapTypeTrait;
+
     protected array $responseData;
 
     public function __construct(protected Response $response, SDKException $previousException = null)
     {
         $this->responseData = $response->getDecodedBody();
 
-        $errorMessage   = $this->get('message', 'Unknown error from Graph.');
-        $errorCode      = $this->get('code', -1);
+        $errorMessage   = self::mapType(
+            $this->get('message', 'Unknown error from Graph.'),
+            'str'
+        );
+        $errorCode      = self::mapType(
+            $this->get('code'),
+            'int',
+            -1
+        );
 
         parent::__construct($errorMessage, $errorCode, $previousException);
     }
@@ -41,9 +51,11 @@ class ResponseException extends SDKException
         $message = $data['error']['message'] ?? 'Unknown error from Graph.';
 
         if (isset($data['error']['error_subcode'])) {
-            $subcode = is_numeric($data['error']['error_subcode'])
-                ? (int)$data['error']['error_subcode']
-                : -1;
+            $subcode = self::mapType(
+                $data['error']['error_subcode'],
+                'int',
+                -1
+            );
 
             switch ($data['error']['error_subcode']) {
                 // Other authentication issues
@@ -76,7 +88,10 @@ class ResponseException extends SDKException
             }
         }
 
-        $code = is_numeric($code) ? (int)$code : null;
+        $code = self::mapType(
+            $code,
+            'int'
+        );
         switch ($code) {
             // Login status or token expired, revoked, or invalid
             case 100:
@@ -129,11 +144,11 @@ class ResponseException extends SDKException
      */
     public function getSubErrorCode(): int
     {
-        $subcode = $this->get('error_subcode', -1);
-
-        return is_numeric($subcode)
-            ? (int)$subcode
-            : -1;
+        return self::mapType(
+            $this->get('error_subcode'),
+            'int',
+            -1
+        );
     }
 
     /**
@@ -141,7 +156,11 @@ class ResponseException extends SDKException
      */
     public function getErrorType(): string
     {
-        return (string)$this->get('type', '');
+        return self::mapType(
+            $this->get('type'),
+            'str',
+            ''
+        );
     }
 
     /**

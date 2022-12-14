@@ -2,49 +2,49 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class GraphCoverPhoto
-
- */
 class GraphCoverPhoto extends GraphNode
 {
     /**
      * Returns the id of cover if it exists
-     *
-     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
-        return $this->getField('id');
+        return self::mapType(
+            $this->getField('id'),
+            'int'
+        );
     }
 
     /**
      * Returns the source of cover if it exists
-     *
-     * @return string|null
      */
-    public function getSource()
+    public function getSource(): ?string
     {
-        return $this->getField('source');
+        return self::mapType(
+            $this->getField('source'),
+            'str'
+        );
     }
 
     /**
      * Returns the offset_x of cover if it exists
-     *
-     * @return int|null
      */
-    public function getOffsetX()
+    public function getOffsetX(): ?int
     {
-        return $this->getField('offset_x');
+        return self::mapType(
+            $this->getField('offset_x'),
+            'int'
+        );
     }
 
     /**
      * Returns the offset_y of cover if it exists
-     *
-     * @return int|null
      */
-    public function getOffsetY()
+    public function getOffsetY(): ?int
     {
-        return $this->getField('offset_y');
+        return self::mapType(
+            $this->getField('offset_y'),
+            'int'
+        );
     }
 }

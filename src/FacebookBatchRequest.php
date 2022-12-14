@@ -8,10 +8,6 @@ use ArrayAccess;
 use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Exceptions\SDKException;
 
-/**
- * Class BatchRequest
-
- */
 class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate, ArrayAccess
 {
     /**
@@ -185,10 +181,8 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
 
     /**
      * Converts the requests into a JSON(P) string.
-     *
-     * @return string
      */
-    public function convertRequestsToJson()
+    public function convertRequestsToJson(): string
     {
         $requests = [];
         foreach ($this->requests as $request) {
@@ -198,7 +192,11 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
                 $options['name'] = $request['name'];
             }
 
-            $options += $request['options'];
+            $options = [
+                ...$request['options'],
+
+                ...$options,
+            ];
 
             $requests[] = $this->requestEntityToBatchArray($request['request'], $options, $request['attached_files']);
         }
@@ -216,13 +214,19 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
      *
      * @return array
      */
-    public function requestEntityToBatchArray(FacebookRequest $request, $options = null, $attachedFiles = null)
+    public function requestEntityToBatchArray(
+        FacebookRequest $request,
+        string|array $options = null,
+        string $attachedFiles = null
+    ): array
     {
-
-        if (null === $options) {
+        if (is_null($options)) {
             $options = [];
-        } elseif (!is_array($options)) {
-            $options = ['name' => $options];
+        }
+        elseif (!is_array($options)) {
+            $options = [
+                'name' => $options
+            ];
         }
 
         $compiledHeaders = [];
@@ -244,7 +248,11 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
             $batch['body'] = $body;
         }
 
-        $batch += $options;
+        $batch = [
+            ...$options,
+
+            ...$batch,
+        ];
 
         if (null !== $attachedFiles) {
             $batch['attached_files'] = $attachedFiles;

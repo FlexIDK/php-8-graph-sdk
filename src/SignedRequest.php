@@ -4,12 +4,9 @@ namespace One23\GraphSdk;
 
 use One23\GraphSdk\Exceptions\SDKException;
 
-/**
- * Class SignedRequest
-
- */
 class SignedRequest
 {
+    use MapTypeTrait;
 
     /**
      * The payload from the decrypted signed request.
@@ -208,9 +205,10 @@ class SignedRequest
      */
     public function getUserId(): ?string
     {
-        $userId = $this->get('user_id');
-
-        return !is_null($userId) ? (string)$userId : null;
+        return self::mapType(
+            $this->get('user_id'),
+            'str'
+        );
     }
 
     /**
@@ -218,7 +216,17 @@ class SignedRequest
      */
     public function hasOAuthData(): bool
     {
-        return !!($this->get('oauth_token') || $this->get('code'));
+        $oauthToken = self::mapType(
+            $this->get('oauth_token'),
+            'str'
+        );
+
+        $code = self::mapType(
+            $this->get('code'),
+            'int'
+        );
+
+        return !!($oauthToken || $code);
     }
 
     /**

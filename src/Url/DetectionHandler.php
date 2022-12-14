@@ -2,8 +2,12 @@
 
 namespace One23\GraphSdk\Url;
 
+use One23\GraphSdk\MapTypeTrait;
+
 class DetectionHandler implements DetectionInterface
 {
+    use MapTypeTrait;
+
     public function getCurrentUrl(): string
     {
         return $this->getHttpScheme() . '://' . $this->getHostName() . $this->getServerVar('REQUEST_URI');
@@ -33,7 +37,7 @@ class DetectionHandler implements DetectionInterface
             return $this->protocolWithActiveSsl((string)$protocol);
         }
 
-        return (string)$this->getServerVar('SERVER_PORT') === '443';
+        return !!((string)$this->getServerVar('SERVER_PORT') === '443');
     }
 
     /**
@@ -41,7 +45,11 @@ class DetectionHandler implements DetectionInterface
      */
     protected function getHeader(string $key): string
     {
-        return $this->getServerVar('HTTP_' . $key);
+        return self::mapType(
+            $this->getServerVar('HTTP_' . $key),
+            'str',
+            ''
+        );
     }
 
     /**

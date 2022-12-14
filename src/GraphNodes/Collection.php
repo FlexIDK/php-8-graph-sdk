@@ -2,182 +2,127 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class Collection
- *
- * Modified version of Collection in "illuminate/support" by Taylor Otwell
-
- */
-
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use One23\GraphSdk\MapTypeTrait;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
-    /**
-     * The items contained in the collection.
-     *
-     * @var array
-     */
-    protected $items = [];
+    use MapTypeTrait;
 
-    public function __construct(array $items = [])
+    public function __construct(protected array $items = [])
     {
-        $this->items = $items;
     }
 
     /**
      * Gets the value of a field from the Graph node.
-     *
-     * @param string $name    The field to retrieve.
-     * @param mixed  $default The default to return if the field doesn't exist.
-     *
-     * @return mixed
      */
-    public function getField($name, $default = null)
+    public function getField(string $name, mixed $default = null): mixed
     {
-        if (isset($this->items[$name])) {
-            return $this->items[$name];
-        }
-
-        return $default;
+        return $this->items[$name] ?? $default;
     }
 
     /**
      * Returns a list of all fields set on the object.
-     *
-     * @return array
      */
-    public function getFieldNames()
+    public function getFieldNames(): array
     {
         return array_keys($this->items);
     }
 
     /**
      * Get all of the items in the collection.
-     *
-     * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->items;
     }
 
     /**
      * Run a map over each of the items.
-     *
-     * @param \Closure $callback
-     *
-     * @return static
      */
-    public function map(\Closure $callback)
+    public function map(\Closure $callback): static
     {
         return new static(array_map($callback, $this->items, array_keys($this->items)));
     }
 
     /**
      * Count the number of items in the collection.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }
 
     /**
      * Get an iterator for the items.
-     *
-     * @return ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
     }
 
     /**
      * Determine if an item exists at an offset.
-     *
-     * @param mixed $key
-     *
-     * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists(mixed $offset): bool
     {
-        return array_key_exists($key, $this->items);
+        return array_key_exists($offset, $this->items);
     }
 
     /**
      * Get an item at a given offset.
-     *
-     * @param mixed $key
-     *
-     * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->items[$key];
+        return $this->items[$offset];
     }
 
     /**
      * Set the item at a given offset.
-     *
-     * @param mixed $key
-     * @param mixed $value
-     *
-     * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        if (is_null($key)) {
+        if (is_null($offset)) {
             $this->items[] = $value;
-        } else {
-            $this->items[$key] = $value;
+        }
+        else {
+            $this->items[$offset] = $value;
         }
     }
 
     /**
      * Unset the item at a given offset.
-     *
-     * @param string $key
-     *
-     * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset(mixed $offset): void
     {
-        unset($this->items[$key]);
+        if (isset($this->items[$offset])) {
+            unset($this->items[$offset]);
+        }
     }
 
     /**
      * Convert the collection to its string representation.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->asJson();
     }
 
     /**
      * Get the collection of items as JSON.
-     *
-     * @param int $options
-     *
-     * @return string
      */
-    public function asJson($options = 0)
+    public function asJson(int $options = 0): string
     {
         return json_encode($this->asArray(), $options);
     }
 
     /**
      * Get the collection of items as a plain array.
-     *
-     * @return array
      */
-    public function asArray()
+    public function asArray(): array
     {
         return array_map(function ($value) {
             return $value instanceof Collection ? $value->asArray() : $value;

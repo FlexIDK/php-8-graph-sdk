@@ -8,22 +8,20 @@ namespace One23\GraphSdk\GraphNodes;
  */
 class GraphGroup extends GraphNode
 {
-    /**
-     * @var array Maps object key names to GraphNode types.
-     */
-    protected static $graphObjectMap = [
-        'cover' => '\One23\GraphSdk\GraphNodes\GraphCoverPhoto',
-        'venue' => '\One23\GraphSdk\GraphNodes\GraphLocation',
+    protected static array $graphObjectMap = [
+        'cover' => GraphCoverPhoto::class,
+        'venue' => GraphLocation::class,
     ];
 
     /**
      * Returns the `id` (The Group ID) as string if present.
-     *
-     * @return string|null
      */
-    public function getId()
+    public function getId(): ?string
     {
-        return $this->getField('id');
+        return self::mapType(
+            $this->getField('id'),
+            'str'
+        );
     }
 
     /**

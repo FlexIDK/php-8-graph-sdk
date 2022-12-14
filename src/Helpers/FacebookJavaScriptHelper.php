@@ -2,11 +2,7 @@
 
 namespace One23\GraphSdk\Helpers;
 
-/**
- * Class FacebookJavaScriptLoginHelper
-
- */
-class FacebookJavaScriptHelper extends FacebookSignedRequestFromInputHelper
+class FacebookJavaScriptHelper extends AbstractSignedRequestFromInput
 {
     /**
      * Get raw signed request from the cookie.

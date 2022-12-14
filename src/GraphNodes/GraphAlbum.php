@@ -9,153 +9,164 @@ namespace One23\GraphSdk\GraphNodes;
 
 class GraphAlbum extends GraphNode
 {
-    /**
-     * @var array Maps object key names to Graph object types.
-     */
-    protected static $graphObjectMap = [
-        'from' => '\One23\GraphSdk\GraphNodes\GraphUser',
-        'place' => '\One23\GraphSdk\GraphNodes\GraphPage',
+    protected static array $graphObjectMap = [
+        'from'  => GraphUser::class,
+        'place' => GraphPage::class,
     ];
 
     /**
      * Returns the ID for the album.
-     *
-     * @return string|null
      */
-    public function getId()
+    public function getId(): ?string
     {
-        return $this->getField('id');
+        return self::mapType(
+            $this->getField('id'),
+            'str'
+        );
     }
 
     /**
      * Returns whether the viewer can upload photos to this album.
-     *
-     * @return boolean|null
      */
-    public function getCanUpload()
+    public function getCanUpload(): ?bool
     {
-        return $this->getField('can_upload');
+        return self::mapType(
+            $this->getField('can_upload'),
+            'boolOrNull'
+        );
     }
 
     /**
      * Returns the number of photos in this album.
-     *
-     * @return int|null
      */
-    public function getCount()
+    public function getCount(): ?int
     {
-        return $this->getField('count');
+        return self::mapType(
+            $this->getField('count'),
+            'int'
+        );
     }
 
     /**
      * Returns the ID of the album's cover photo.
-     *
-     * @return string|null
      */
-    public function getCoverPhoto()
+    public function getCoverPhoto(): ?string
     {
-        return $this->getField('cover_photo');
+        return self::mapType(
+            $this->getField('cover_photo'),
+            'str'
+        );
     }
 
     /**
      * Returns the time the album was initially created.
-     *
-     * @return \DateTime|null
      */
-    public function getCreatedTime()
+    public function getCreatedTime(): ?\DateTime
     {
-        return $this->getField('created_time');
+        return self::mapType(
+            $this->getField('created_time'),
+            \DateTime::class
+        );
     }
 
     /**
      * Returns the time the album was updated.
-     *
-     * @return \DateTime|null
      */
-    public function getUpdatedTime()
+    public function getUpdatedTime(): ?\DateTime
     {
-        return $this->getField('updated_time');
+        return self::mapType(
+            $this->getField('updated_time'),
+            \DateTime::class
+        );
     }
 
     /**
      * Returns the description of the album.
-     *
-     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
-        return $this->getField('description');
+        return self::mapType(
+            $this->getField('description'),
+            'str'
+        );
     }
 
     /**
      * Returns profile that created the album.
-     *
-     * @return GraphUser|null
      */
-    public function getFrom()
+    public function getFrom(): ?GraphUser
     {
-        return $this->getField('from');
+        return self::mapType(
+            $this->getField('from'),
+            GraphUser::class
+        );
     }
 
     /**
      * Returns profile that created the album.
-     *
-     * @return GraphPage|null
      */
-    public function getPlace()
+    public function getPlace(): ?GraphPage
     {
-        return $this->getField('place');
+        return self::mapType(
+            $this->getField('place'),
+            GraphPage::class
+        );
     }
 
     /**
      * Returns a link to this album on Facebook.
-     *
-     * @return string|null
      */
-    public function getLink()
+    public function getLink(): ?string
     {
-        return $this->getField('link');
+        return self::mapType(
+            $this->getField('link'),
+            'str'
+        );
     }
 
     /**
      * Returns the textual location of the album.
-     *
-     * @return string|null
      */
-    public function getLocation()
+    public function getLocation(): ?string
     {
-        return $this->getField('location');
+        return self::mapType(
+            $this->getField('location'),
+            'str'
+        );
     }
 
     /**
      * Returns the title of the album.
-     *
-     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
-        return $this->getField('name');
+        return self::mapType(
+            $this->getField('name'),
+            'str'
+        );
     }
 
     /**
      * Returns the privacy settings for the album.
-     *
-     * @return string|null
      */
-    public function getPrivacy()
+    public function getPrivacy(): ?string
     {
-        return $this->getField('privacy');
+        return self::mapType(
+            $this->getField('privacy'),
+            'str'
+        );
     }
 
     /**
      * Returns the type of the album.
      *
      * enum{ profile, mobile, wall, normal, album }
-     *
-     * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
-        return $this->getField('type');
+        return self::mapType(
+            $this->getField('type'),
+            'str'
+        );
     }
 }

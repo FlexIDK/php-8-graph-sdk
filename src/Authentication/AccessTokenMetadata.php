@@ -3,6 +3,7 @@
 namespace One23\GraphSdk\Authentication;
 
 use One23\GraphSdk\Exceptions\SDKException;
+use One23\GraphSdk\MapTypeTrait;
 
 /**
  * Represents metadata from an access token.
@@ -11,6 +12,8 @@ use One23\GraphSdk\Exceptions\SDKException;
  */
 class AccessTokenMetadata
 {
+    use MapTypeTrait;
+
     /**
      * Properties that should be cast as DateTime objects.
      */
@@ -63,11 +66,10 @@ class AccessTokenMetadata
      */
     public function getApplication(): ?string
     {
-        $application = $this->getField('application');
-
-        return $application
-            ? (string)$application
-            : null;
+        return self::mapType(
+            $this->getField('application'),
+            'str'
+        );
     }
 
     /**
@@ -92,11 +94,10 @@ class AccessTokenMetadata
      */
     public function getErrorCode(): ?int
     {
-        $code = $this->getErrorProperty('code');
-
-        return is_numeric($code)
-            ? (int)$code
-            : null;
+        return self::mapType(
+            $this->getErrorProperty('code'),
+            'int'
+        );
     }
 
     /**
@@ -128,11 +129,10 @@ class AccessTokenMetadata
      */
     public function getErrorMessage(): ?string
     {
-        $message = $this->getErrorProperty('message');
-
-        return $message
-            ? (string)$message
-            : null;
+        return self::mapType(
+            $this->getErrorProperty('message'),
+            'string'
+        );
     }
 
     /**
@@ -140,11 +140,10 @@ class AccessTokenMetadata
      */
     public function getErrorSubcode(): ?int
     {
-        $subcode = $this->getErrorProperty('subcode');
-
-        return is_numeric($subcode)
-            ? (int)$subcode
-            : null;
+        return self::mapType(
+            $this->getErrorProperty('subcode'),
+            'int'
+        );
     }
 
     /**
@@ -152,7 +151,10 @@ class AccessTokenMetadata
      */
     public function getIsValid(): bool
     {
-        return !!($this->getField('is_valid'));
+        return self::mapType(
+            $this->getField('is_valid'),
+            'bool'
+        );
     }
 
     /**
@@ -165,11 +167,10 @@ class AccessTokenMetadata
      */
     public function getIssuedAt(): ?\DateTime
     {
-        $issuedAt = $this->getField('issued_at');
-
-        return $issuedAt instanceof \DateTime
-            ? $issuedAt
-            : null;
+        return self::mapType(
+            $this->getField('issued_at'),
+            \DateTime::class
+        );
     }
 
     /**
@@ -178,11 +179,10 @@ class AccessTokenMetadata
      */
     public function getMetadata(): ?array
     {
-        $metadata = $this->getField('metadata');
-
-        return is_array($metadata)
-            ? $metadata
-            : null;
+        return self::mapType(
+            $this->getField('metadata'),
+            'array'
+        );
     }
 
     /**
@@ -190,11 +190,10 @@ class AccessTokenMetadata
      */
     public function getSso(): ?string
     {
-        $sso = $this->getMetadataProperty('sso');
-
-        return $sso
-            ? (string)$sso
-            : null;
+        return self::mapType(
+            $this->getMetadataProperty('sso'),
+            'string'
+        );
     }
 
     /**
@@ -210,11 +209,10 @@ class AccessTokenMetadata
      */
     public function getAuthType(): ?string
     {
-        $authType = $this->getMetadataProperty('auth_type');
-
-        return $authType
-            ? (string)$authType
-            : null;
+        return self::mapType(
+            $this->getMetadataProperty('auth_type'),
+            'string'
+        );
     }
 
     /**
@@ -222,11 +220,10 @@ class AccessTokenMetadata
      */
     public function getAuthNonce(): ?string
     {
-        $authNonce = $this->getMetadataProperty('auth_nonce');
-
-        return $authNonce
-            ? (string)$authNonce
-            : null;
+        return self::mapType(
+            $this->getMetadataProperty('auth_nonce'),
+            'string'
+        );
     }
 
     /**
@@ -235,11 +232,10 @@ class AccessTokenMetadata
      */
     public function getProfileId(): ?string
     {
-        $profileId = $this->getField('profile_id');
-
-        return $profileId
-            ? (string)$profileId
-            : null;
+        return self::mapType(
+            $this->getField('profile_id'),
+            'string'
+        );
     }
 
     /**
@@ -248,11 +244,10 @@ class AccessTokenMetadata
      */
     public function getScopes(): array
     {
-        $scopes = $this->getField('scopes');
-
-        return is_array($scopes)
-            ? $scopes
-            : [];
+        return self::mapType(
+            $this->getField('scopes'),
+            'array'
+        );
     }
 
     /**
@@ -273,11 +268,10 @@ class AccessTokenMetadata
      */
     public function getAppId(): ?string
     {
-        $appId = $this->getField('app_id');
-
-        return $appId
-            ? (string)$appId
-            : null;
+        return self::mapType(
+            $this->getField('app_id'),
+            'string'
+        );
     }
 
     /**
@@ -298,11 +292,10 @@ class AccessTokenMetadata
      */
     public function getUserId(): ?string
     {
-        $userId = $this->getField('user_id');
-
-        return $userId
-            ? (string)$userId
-            : null;
+        return self::mapType(
+            $this->getField('user_id'),
+            'string'
+        );
     }
 
     /**
@@ -326,10 +319,9 @@ class AccessTokenMetadata
      */
     public function getExpiresAt(): ?\DateTime
     {
-        $expiresAt = $this->getField('expires_at');
-
-        return $expiresAt instanceof \DateTime
-            ? $expiresAt
-            : null;
+        return self::mapType(
+            $this->getField('expires_at'),
+            \DateTime::class
+        );
     }
 }

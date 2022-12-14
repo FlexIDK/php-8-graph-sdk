@@ -2,17 +2,18 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class GraphNode
+use One23\GraphSdk\Authentication\AccessToken;
+use One23\GraphSdk\Exception;
 
- */
 class GraphNode extends Collection
 {
-    /**
-     * @var array Maps object key names to Graph object types.
-     */
-    protected static $graphObjectMap = [];
+    const ISO8601 = 'Y-m-d\TH:i:sO';
 
+    protected static array $graphObjectMap = [];
+
+    /**
+     * @throws Exception
+     */
     public function __construct(array $data = [])
     {
         parent::__construct($this->castItems($data));
@@ -22,13 +23,9 @@ class GraphNode extends Collection
      * Iterates over an array and detects the types each node
      * should be cast to and returns all the items as an array.
      *
-     * @TODO Add auto-casting to AccessToken entities.
-     *
-     * @param array $data The array to iterate over.
-     *
-     * @return array
+     * @throws Exception
      */
-    public function castItems(array $data)
+    public function castItems(array $data): array
     {
         $items = [];
 
@@ -38,9 +35,14 @@ class GraphNode extends Collection
                     || $this->isIso8601DateString($v))
             ) {
                 $items[$k] = $this->castToDateTime($v);
-            } elseif ($k === 'birthday') {
+            }
+            elseif ($k === 'birthday') {
                 $items[$k] = $this->castToBirthday($v);
-            } else {
+            }
+            elseif ($k === 'access_token') {
+                $items[$k] = new AccessToken($v);
+            }
+            else {
                 $items[$k] = $v;
             }
         }
@@ -51,11 +53,8 @@ class GraphNode extends Collection
     /**
      * Determines if a value from Graph should be cast to DateTime.
      *
-     * @param string $key
-     *
-     * @return boolean
      */
-    public function shouldCastAsDateTime($key)
+    public function shouldCastAsDateTime(string $key): bool
     {
         return in_array($key, [
             'created_time',
@@ -73,15 +72,11 @@ class GraphNode extends Collection
     /**
      * Detects an ISO 8601 formatted string.
      *
-     * @param string $string
-     *
-     * @return boolean
-     *
      * @see https://developers.facebook.com/docs/graph-api/using-graph-api/#readmodifiers
      * @see http://www.cl.cam.ac.uk/~mgk25/iso-time.html
      * @see http://en.wikipedia.org/wiki/ISO_8601
      */
-    public function isIso8601DateString($string)
+    public function isIso8601DateString(string$string): bool
     {
         // This insane regex was yoinked from here:
         // http://www.pelagodesign.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
@@ -99,18 +94,20 @@ class GraphNode extends Collection
 
     /**
      * Casts a date value from Graph to DateTime.
-     *
-     * @param int|string $value
-     *
-     * @return \DateTime
      */
-    public function castToDateTime($value)
+    public function castToDateTime(int|string $value): \DateTime
     {
         if (is_int($value)) {
             $dt = new \DateTime();
             $dt->setTimestamp($value);
-        } else {
-            $dt = new \DateTime($value);
+        }
+        else {
+            try {
+                $dt = new \DateTime($value);
+            }
+            catch (\Exception) {
+                $dt = new \DateTime();
+            }
         }
 
         return $dt;
@@ -119,33 +116,25 @@ class GraphNode extends Collection
     /**
      * Casts a birthday value from Graph to Birthday
      *
-     * @param string $value
-     *
-     * @return Birthday
+     * @throws Exception
      */
-    public function castToBirthday($value)
+    public function castToBirthday(string $value): Birthday
     {
         return new Birthday($value);
     }
 
     /**
      * Getter for $graphObjectMap.
-     *
-     * @return array
      */
-    public static function getObjectMap()
+    public static function getObjectMap(): array
     {
         return static::$graphObjectMap;
     }
 
     /**
      * Get the collection of items as JSON.
-     *
-     * @param int $options
-     *
-     * @return string
      */
-    public function asJson($options = 0)
+    public function asJson(int $options = 0): string
     {
         return json_encode($this->uncastItems(), $options);
     }
@@ -153,19 +142,18 @@ class GraphNode extends Collection
     /**
      * Uncasts any auto-casted datatypes.
      * Basically the reverse of castItems().
-     *
-     * @return array
      */
-    public function uncastItems()
+    public function uncastItems(): array
     {
         $items = $this->asArray();
 
         return array_map(function ($v) {
             if ($v instanceof \DateTime) {
-                return $v->format(\DateTime::ISO8601);
+                return $v->format(self::ISO8601);
             }
 
             return $v;
         }, $items);
     }
+
 }

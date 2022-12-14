@@ -11,10 +11,6 @@ use One23\GraphSdk\PseudoRandomString\GeneratorFactory;
 use One23\GraphSdk\PseudoRandomString\Generators\GeneratorInterface;
 use One23\GraphSdk\Url;
 
-/**
- * Class FacebookRedirectLoginHelper
-
- */
 class FacebookRedirectLoginHelper
 {
     const CSRF_LENGTH = 32;

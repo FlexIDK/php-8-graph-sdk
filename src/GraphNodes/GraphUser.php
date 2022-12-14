@@ -8,24 +8,22 @@ namespace One23\GraphSdk\GraphNodes;
  */
 class GraphUser extends GraphNode
 {
-    /**
-     * @var array Maps object key names to Graph object types.
-     */
-    protected static $graphObjectMap = [
-        'hometown' => '\One23\GraphSdk\GraphNodes\GraphPage',
-        'location' => '\One23\GraphSdk\GraphNodes\GraphPage',
-        'significant_other' => '\One23\GraphSdk\GraphNodes\GraphUser',
-        'picture' => '\One23\GraphSdk\GraphNodes\GraphPicture',
+    protected static array $graphObjectMap = [
+        'hometown' => GraphPage::class,
+        'location' => GraphPage::class,
+        'significant_other' => GraphUser::class,
+        'picture' => GraphPicture::class,
     ];
 
     /**
      * Returns the ID for the user as a string if present.
-     *
-     * @return string|null
      */
-    public function getId()
+    public function getId(): ?string
     {
-        return $this->getField('id');
+        return self::mapType(
+            $this->getField('id'),
+            'str'
+        );
     }
 
     /**

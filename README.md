@@ -48,13 +48,15 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - FacebookResumableUploader -> ResumableUploader
     - FacebookTransferChunk -> TransferChunk
     - FacebookVideo -> Video
+  - Helpers\
+    - FacebookSignedRequestFromInputHelper -> AbstractSignedRequestFromInput 
   - PseudoRandomString\
-    - McryptPseudoRandomStringGenerator -> PseudoRandomString\Generators\McryptGenerator (deprecate)
-    - OpenSslPseudoRandomStringGenerator -> PseudoRandomString\Generators\OpenSslGenerator
-    - RandomBytesPseudoRandomStringGenerator -> PseudoRandomString\Generators\RandomBytesGenerator
-    - UrandomPseudoRandomStringGenerator -> PseudoRandomString\Generators\UrandomGenerator
-    - PseudoRandomStringGeneratorInterface -> PseudoRandomString\Generators\GeneratorInterface
-    - PseudoRandomStringGeneratorFactory -> PseudoRandomString\GeneratorFactory
+    - McryptPseudoRandomStringGenerator -> Generators\McryptGenerator (deprecate)
+    - OpenSslPseudoRandomStringGenerator -> Generators\OpenSslGenerator
+    - RandomBytesPseudoRandomStringGenerator -> Generators\RandomBytesGenerator
+    - UrandomPseudoRandomStringGenerator -> Generators\UrandomGenerator
+    - PseudoRandomStringGeneratorInterface -> Generators\GeneratorInterface
+    - PseudoRandomStringGeneratorFactory -> GeneratorFactory
   - Url\
     - FacebookUrlManipulator -> Url\Manipulator
     - UrlDetectionInterface -> Url\DetectionInterface
@@ -76,6 +78,8 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - FacebookResumableUploader
     - FacebookTransferChunk
     - FacebookVideo
+  - Helpers\
+    - FacebookSignedRequestFromInputHelper 
   - PseudoRandomString\
     - McryptPseudoRandomStringGenerator
     - OpenSslPseudoRandomStringGenerator

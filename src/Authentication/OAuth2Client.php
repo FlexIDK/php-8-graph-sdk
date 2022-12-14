@@ -152,7 +152,11 @@ class OAuth2Client
         AccessToken|string $accessToken = null
     ): Response
     {
-        $params += $this->getClientParams();
+        $params = [
+            ...$this->getClientParams(),
+
+            ...$params,
+        ];
 
         $accessToken = $accessToken ?: $this->app->getAccessToken();
 

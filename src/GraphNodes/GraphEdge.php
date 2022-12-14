@@ -12,92 +12,58 @@ use One23\GraphSdk\Exceptions\SDKException;
  */
 class GraphEdge extends Collection
 {
-    /**
-     * @var FacebookRequest The original request that generated this data.
-     */
-    protected $request;
-
-    /**
-     * @var array An array of Graph meta data like pagination, etc.
-     */
-    protected $metaData = [];
-
-    /**
-     * @var string|null The parent Graph edge endpoint that generated the list.
-     */
-    protected $parentEdgeEndpoint;
-
-    /**
-     * @var string|null The subclass of the child GraphNode's.
-     */
-    protected $subclassName;
-
     public function __construct(
-        FacebookRequest $request,
+        protected FacebookRequest $request,
         array $data = [],
-        array $metaData = [],
-        string $parentEdgeEndpoint = null,
-        string $subclassName = null
+        protected array $metaData = [],
+        protected ?string $parentEdgeEndpoint = null,
+        protected ?string $subclassName = null
     ) {
-        $this->request = $request;
-        $this->metaData = $metaData;
-        $this->parentEdgeEndpoint = $parentEdgeEndpoint;
-        $this->subclassName = $subclassName;
-
         parent::__construct($data);
     }
 
     /**
      * Gets the parent Graph edge endpoint that generated the list.
-     *
-     * @return string|null
      */
-    public function getParentGraphEdge()
+    public function getParentGraphEdge(): ?string
     {
         return $this->parentEdgeEndpoint;
     }
 
     /**
      * Gets the subclass name that the child GraphNode's are cast as.
-     *
-     * @return string|null
      */
-    public function getSubClassName()
+    public function getSubClassName(): ?string
     {
         return $this->subclassName;
     }
 
     /**
      * Returns the raw meta data associated with this GraphEdge.
-     *
-     * @return array
      */
-    public function getMetaData()
+    public function getMetaData(): array
     {
         return $this->metaData;
     }
 
     /**
      * Returns the next cursor if it exists.
-     *
-     * @return string|null
      */
-    public function getNextCursor()
+    public function getNextCursor(): ?string
     {
         return $this->getCursor('after');
     }
 
     /**
      * Returns the cursor for a specific direction if it exists.
-     *
-     * @param string $direction The direction of the page: after|before
-     *
-     * @return string|null
      */
-    public function getCursor($direction)
+    public function getCursor(string $direction): ?string
     {
         if (isset($this->metaData['paging']['cursors'][$direction])) {
-            return $this->metaData['paging']['cursors'][$direction];
+            return self::mapType(
+                $this->metaData['paging']['cursors'][$direction],
+                'str'
+            );
         }
 
         return null;
@@ -105,10 +71,8 @@ class GraphEdge extends Collection
 
     /**
      * Returns the previous cursor if it exists.
-     *
-     * @return string|null
      */
-    public function getPreviousCursor()
+    public function getPreviousCursor(): ?string
     {
         return $this->getCursor('before');
     }
@@ -116,11 +80,9 @@ class GraphEdge extends Collection
     /**
      * Gets the request object needed to make a "next" page request.
      *
-     * @return FacebookRequest|null
-     *
      * @throws SDKException
      */
-    public function getNextPageRequest()
+    public function getNextPageRequest(): ?FacebookRequest
     {
         return $this->getPaginationRequest('next');
     }
@@ -150,13 +112,9 @@ class GraphEdge extends Collection
     /**
      * Generates a pagination URL based on a cursor.
      *
-     * @param string $direction The direction of the page: next|previous
-     *
-     * @return string|null
-     *
      * @throws SDKException
      */
-    public function getPaginationUrl($direction)
+    public function getPaginationUrl(string $direction): ?string
     {
         $this->validateForPagination();
 
@@ -165,7 +123,14 @@ class GraphEdge extends Collection
             return null;
         }
 
-        $pageUrl = $this->metaData['paging'][$direction];
+        $pageUrl = self::mapType(
+            $this->metaData['paging'][$direction],
+            'str'
+        );
+
+        if (!$pageUrl) {
+            return null;
+        }
 
         return Url\Manipulator::baseGraphUrlEndpoint($pageUrl);
     }
@@ -175,7 +140,7 @@ class GraphEdge extends Collection
      *
      * @throws SDKException
      */
-    public function validateForPagination()
+    public function validateForPagination(): void
     {
         if ($this->request->getMethod() !== 'GET') {
             throw new SDKException('You can only paginate on a GET request.', 720);
@@ -185,11 +150,9 @@ class GraphEdge extends Collection
     /**
      * Gets the request object needed to make a "previous" page request.
      *
-     * @return FacebookRequest|null
-     *
      * @throws SDKException
      */
-    public function getPreviousPageRequest()
+    public function getPreviousPageRequest(): ?FacebookRequest
     {
         return $this->getPaginationRequest('previous');
     }
@@ -198,22 +161,20 @@ class GraphEdge extends Collection
      * The total number of results according to Graph if it exists.
      *
      * This will be returned if the summary=true modifier is present in the request.
-     *
-     * @return int|null
      */
-    public function getTotalCount()
+    public function getTotalCount(): ?int
     {
         if (isset($this->metaData['summary']['total_count'])) {
-            return $this->metaData['summary']['total_count'];
+            return self::mapType(
+                $this->metaData['summary']['total_count'],
+                'int'
+            );
         }
 
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function map(\Closure $callback)
+    public function map(\Closure $callback): static
     {
         return new static(
             $this->request,

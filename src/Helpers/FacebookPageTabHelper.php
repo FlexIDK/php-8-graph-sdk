@@ -5,16 +5,9 @@ namespace One23\GraphSdk\Helpers;
 use One23\GraphSdk\FacebookApp;
 use One23\GraphSdk\FacebookClient;
 
-/**
- * Class FacebookPageTabHelper
-
- */
 class FacebookPageTabHelper extends FacebookCanvasHelper
 {
-    /**
-     * @var array|null
-     */
-    protected $pageData;
+    protected ?array $pageData = null;
 
     public function __construct(
         FacebookApp $app,
@@ -32,23 +25,16 @@ class FacebookPageTabHelper extends FacebookCanvasHelper
 
     /**
      * Returns true if the user is an admin.
-     *
-     * @return boolean
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return $this->getPageData('admin') === true;
+        return !!($this->getPageData('admin') === true);
     }
 
     /**
      * Returns a value from the page data.
-     *
-     * @param string     $key
-     * @param mixed|null $default
-     *
-     * @return mixed|null
      */
-    public function getPageData($key, $default = null)
+    public function getPageData(string $key, mixed $default = null): mixed
     {
         if (isset($this->pageData[$key])) {
             return $this->pageData[$key];
@@ -59,11 +45,12 @@ class FacebookPageTabHelper extends FacebookCanvasHelper
 
     /**
      * Returns the page id if available.
-     *
-     * @return string|null
      */
-    public function getPageId()
+    public function getPageId(): ?string
     {
-        return $this->getPageData('id');
+        return self::mapType(
+            $this->getPageData('id'),
+            'str'
+        );
     }
 }

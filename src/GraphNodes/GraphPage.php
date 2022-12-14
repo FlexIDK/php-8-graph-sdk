@@ -2,31 +2,29 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
+use One23\GraphSdk\Authentication\AccessToken;/**
  * Class GraphPage
-
  */
 class GraphPage extends GraphNode
 {
-    /**
-     * @var array Maps object key names to Graph object types.
-     */
-    protected static $graphObjectMap = [
-        'best_page' => '\One23\GraphSdk\GraphNodes\GraphPage',
-        'global_brand_parent_page' => '\One23\GraphSdk\GraphNodes\GraphPage',
-        'location' => '\One23\GraphSdk\GraphNodes\GraphLocation',
-        'cover' => '\One23\GraphSdk\GraphNodes\GraphCoverPhoto',
-        'picture' => '\One23\GraphSdk\GraphNodes\GraphPicture',
+
+    protected static array $graphObjectMap = [
+        'best_page' => GraphPage::class,
+        'global_brand_parent_page' => GraphPage::class,
+        'location' => GraphLocation::class,
+        'cover' => GraphCoverPhoto::class,
+        'picture' => GraphPicture::class,
     ];
 
     /**
      * Returns the ID for the user's page as a string if present.
-     *
-     * @return string|null
      */
-    public function getId()
+    public function getId(): ?string
     {
-        return $this->getField('id');
+        return self::mapType(
+            $this->getField('id'),
+            'str'
+        );
     }
 
     /**
@@ -91,24 +89,32 @@ class GraphPage extends GraphNode
 
     /**
      * Returns Picture of the Page.
-     *
-     * @return GraphPicture|null
      */
-    public function getPicture()
+    public function getPicture(): ?GraphPicture
     {
-        return $this->getField('picture');
+        return self::mapType(
+            $this->getField('picture'),
+            GraphPicture::class
+        );
     }
 
     /**
      * Returns the page access token for the admin user.
      *
      * Only available in the `/me/accounts` context.
-     *
-     * @return string|null
      */
-    public function getAccessToken()
+    public function getAccessToken(): AccessToken|string|null
     {
-        return $this->getField('access_token');
+        $accessToken = $this->getField('access_token');
+
+        if ($accessToken instanceof AccessToken) {
+            return $accessToken;
+        }
+
+        return self::mapType(
+            $accessToken,
+            'str'
+        );
     }
 
     /**

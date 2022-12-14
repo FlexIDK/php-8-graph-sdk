@@ -2,23 +2,13 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-use DateTime;
+use One23\GraphSdk\Exception;
 
-/**
- * Birthday object to handle various Graph return formats
-
- */
-class Birthday extends DateTime
+class Birthday extends \DateTime
 {
-    /**
-     * @var bool
-     */
-    private $hasDate = false;
+    private bool $hasDate = false;
 
-    /**
-     * @var bool
-     */
-    private $hasYear = false;
+    private bool $hasYear = false;
 
     /**
      * Parses Graph birthday format to set indication flags, possible values:
@@ -28,6 +18,8 @@ class Birthday extends DateTime
      *  YYYY
      *
      * @link https://developers.facebook.com/docs/graph-api/reference/user
+     *
+     * @throws Exception
      */
     public function __construct(string $date)
     {
@@ -36,25 +28,26 @@ class Birthday extends DateTime
         $this->hasYear = count($parts) === 3 || count($parts) === 1;
         $this->hasDate = count($parts) === 3 || count($parts) === 2;
 
-        parent::__construct($date);
+        try {
+            parent::__construct($date);
+        }
+        catch (\Exception $exception) {
+            throw new Exception($exception->getMessage(), $exception->getCode(), $exception);
+        }
     }
 
     /**
-     * Returns whether date object contains birth day and month
-     *
-     * @return bool
+     * Returns whether date object contains birthday and month
      */
-    public function hasDate()
+    public function hasDate(): bool
     {
         return $this->hasDate;
     }
 
     /**
      * Returns whether date object contains birth year
-     *
-     * @return bool
      */
-    public function hasYear()
+    public function hasYear(): bool
     {
         return $this->hasYear;
     }

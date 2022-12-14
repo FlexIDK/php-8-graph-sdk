@@ -2,11 +2,7 @@
 
 namespace One23\GraphSdk\Helpers;
 
-/**
- * Class FacebookCanvasLoginHelper
-
- */
-class FacebookCanvasHelper extends FacebookSignedRequestFromInputHelper
+class FacebookCanvasHelper extends AbstractSignedRequestFromInput
 {
     /**
      * Returns the app data value.
@@ -18,8 +14,6 @@ class FacebookCanvasHelper extends FacebookSignedRequestFromInputHelper
 
     /**
      * Get raw signed request from POST.
-     *
-     * @return string|null
      */
     public function getRawSignedRequest(): ?string
     {
