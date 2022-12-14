@@ -2,9 +2,8 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-use One23\GraphSdk\Authentication\AccessToken;/**
- * Class GraphPage
- */
+use One23\GraphSdk\Authentication\AccessToken;
+
 class GraphPage extends GraphNode
 {
 
@@ -29,62 +28,68 @@ class GraphPage extends GraphNode
 
     /**
      * Returns the Category for the user's page as a string if present.
-     *
-     * @return string|null
      */
-    public function getCategory()
+    public function getCategory(): ?string
     {
-        return $this->getField('category');
+        return self::mapType(
+            $this->getField('category'),
+            'str'
+        );
     }
 
     /**
      * Returns the Name of the user's page as a string if present.
-     *
-     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
-        return $this->getField('name');
+        return self::mapType(
+            $this->getField('name'),
+            'str'
+        );
     }
 
     /**
      * Returns the best available Page on Facebook.
-     *
-     * @return GraphPage|null
      */
-    public function getBestPage()
+    public function getBestPage(): ?GraphPage
     {
-        return $this->getField('best_page');
+        return self::mapType(
+            $this->getField('best_page'),
+            GraphPage::class
+        );
     }
 
     /**
      * Returns the brand's global (parent) Page.
-     *
-     * @return GraphPage|null
      */
-    public function getGlobalBrandParentPage()
+    public function getGlobalBrandParentPage(): ?GraphPage
     {
-        return $this->getField('global_brand_parent_page');
+        return self::mapType(
+            $this->getField('global_brand_parent_page'),
+            GraphPage::class
+        );
     }
 
     /**
      * Returns the location of this place.
-     *
-     * @return GraphLocation|null
      */
-    public function getLocation()
+    public function getLocation(): ?GraphLocation
     {
-        return $this->getField('location');
+        return self::mapType(
+            $this->getField('location'),
+            GraphLocation::class
+        );
     }
 
     /**
      * Returns CoverPhoto of the Page.
-     *
-     * @return GraphCoverPhoto|null
      */
-    public function getCover()
+    public function getCover(): ?GraphCoverPhoto
     {
-        return $this->getField('cover');
+        return self::mapType(
+            $this->getField('cover'),
+            GraphCoverPhoto::class
+        );
     }
 
     /**
@@ -121,21 +126,23 @@ class GraphPage extends GraphNode
      * Returns the roles of the page admin user.
      *
      * Only available in the `/me/accounts` context.
-     *
-     * @return array|null
      */
-    public function getPerms()
+    public function getPerms(): ?array
     {
-        return $this->getField('perms');
+        return self::mapType(
+            $this->getField('perms'),
+            'arr'
+        );
     }
 
     /**
      * Returns the `fan_count` (Number of people who likes to page) as int if present.
-     *
-     * @return int|null
      */
-    public function getFanCount()
+    public function getFanCount(): ?int
     {
-        return $this->getField('fan_count');
+        return self::mapType(
+            $this->getField('fan_count'),
+            'intGte0'
+        );
     }
 }

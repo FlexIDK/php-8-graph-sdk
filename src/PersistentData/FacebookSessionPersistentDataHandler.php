@@ -4,10 +4,6 @@ namespace One23\GraphSdk\PersistentData;
 
 use One23\GraphSdk\Exceptions\SDKException;
 
-/**
- * Class FacebookSessionPersistentDataHandler
-
- */
 class FacebookSessionPersistentDataHandler implements PersistentDataInterface
 {
     /**

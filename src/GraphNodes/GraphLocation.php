@@ -2,79 +2,82 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class GraphLocation
-
- */
 class GraphLocation extends GraphNode
 {
     /**
      * Returns the street component of the location
-     *
-     * @return string|null
      */
-    public function getStreet()
+    public function getStreet(): ?string
     {
-        return $this->getField('street');
+        return self::mapType(
+            $this->getField('street'),
+            'str'
+        );
     }
 
     /**
      * Returns the city component of the location
-     *
-     * @return string|null
      */
-    public function getCity()
+    public function getCity(): ?string
     {
-        return $this->getField('city');
+        return self::mapType(
+            $this->getField('city'),
+            'str'
+        );
     }
 
     /**
      * Returns the state component of the location
-     *
-     * @return string|null
      */
-    public function getState()
+    public function getState(): ?string
     {
-        return $this->getField('state');
+        return self::mapType(
+            $this->getField('state'),
+            'str'
+        );
     }
 
     /**
      * Returns the country component of the location
-     *
-     * @return string|null
      */
-    public function getCountry()
+    public function getCountry(): ?string
     {
-        return $this->getField('country');
+        return self::mapType(
+            $this->getField('country'),
+            'str'
+        );
     }
 
     /**
      * Returns the zipcode component of the location
-     *
-     * @return string|null
      */
-    public function getZip()
+    public function getZip(): ?string
     {
-        return $this->getField('zip');
+        return self::mapType(
+            $this->getField('zip'),
+            'str'
+        );
     }
 
     /**
      * Returns the latitude component of the location
-     *
-     * @return float|null
      */
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
-        return $this->getField('latitude');
+        return self::mapType(
+            $this->getField('latitude'),
+            'float'
+        );
     }
 
     /**
      * Returns the street component of the location
-     *
-     * @return float|null
      */
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
-        return $this->getField('longitude');
+        return self::mapType(
+            $this->getField('longitude'),
+            'float'
+        );
     }
 }

@@ -7,11 +7,11 @@ class GraphCoverPhoto extends GraphNode
     /**
      * Returns the id of cover if it exists
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return self::mapType(
             $this->getField('id'),
-            'int'
+            'str'
         );
     }
 

@@ -5,10 +5,6 @@ namespace One23\GraphSdk\HttpClients;
 use One23\GraphSdk\Http\GraphRawResponse;
 use One23\GraphSdk\Exceptions\SDKException;
 
-/**
- * Class FacebookCurlHttpClient
-
- */
 class FacebookCurlHttpClient implements FacebookHttpClientInterface
 {
     /**

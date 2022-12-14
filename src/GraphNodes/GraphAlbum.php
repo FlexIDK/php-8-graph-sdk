@@ -43,7 +43,7 @@ class GraphAlbum extends GraphNode
     {
         return self::mapType(
             $this->getField('count'),
-            'int'
+            'intGte0'
         );
     }
 
@@ -120,7 +120,7 @@ class GraphAlbum extends GraphNode
     {
         return self::mapType(
             $this->getField('link'),
-            'str'
+            'url'
         );
     }
 

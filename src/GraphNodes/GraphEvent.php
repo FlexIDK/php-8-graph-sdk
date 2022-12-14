@@ -2,10 +2,6 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class GraphEvent
-
- */
 class GraphEvent extends GraphNode
 {
     protected static array $graphObjectMap = [
@@ -28,8 +24,6 @@ class GraphEvent extends GraphNode
 
     /**
      * Returns the `cover` (Cover picture) as GraphCoverPhoto if present.
-     *
-     * @return GraphCoverPhoto|null
      */
     public function getCover(): ?GraphCoverPhoto
     {
@@ -189,7 +183,7 @@ class GraphEvent extends GraphNode
     {
         return self::mapType(
             $this->getField('attending_count'),
-            'int'
+            'intGte0'
         );
     }
 
@@ -200,7 +194,7 @@ class GraphEvent extends GraphNode
     {
         return self::mapType(
             $this->getField('declined_count'),
-            'int'
+            'intGte0'
         );
     }
 
@@ -211,7 +205,7 @@ class GraphEvent extends GraphNode
     {
         return self::mapType(
             $this->getField('maybe_count'),
-            'int'
+            'intGte0'
         );
     }
 
@@ -222,7 +216,7 @@ class GraphEvent extends GraphNode
     {
         return self::mapType(
             $this->getField('noreply_count'),
-            'int'
+            'intGte0'
         );
     }
 
@@ -233,7 +227,7 @@ class GraphEvent extends GraphNode
     {
         return self::mapType(
             $this->getField('invited_count'),
-            'int'
+            'intGte0'
         );
     }
 }

@@ -3,11 +3,8 @@
 namespace One23\GraphSdk\HttpClients;
 
 /**
- * Class FacebookStream
- *
  * Abstraction for the procedural stream elements so that the functions can be
  * mocked and the implementation can be tested.
-
  */
 class FacebookStream
 {

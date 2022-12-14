@@ -2,79 +2,82 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class GraphSessionInfo
-
- */
 class GraphSessionInfo extends GraphNode
 {
     /**
      * Returns the application id the token was issued for.
-     *
-     * @return string|null
      */
-    public function getAppId()
+    public function getAppId(): ?string
     {
-        return $this->getField('app_id');
+        return self::mapType(
+            $this->getField('app_id'),
+            'str'
+        );
     }
 
     /**
      * Returns the application name the token was issued for.
-     *
-     * @return string|null
      */
-    public function getApplication()
+    public function getApplication(): ?string
     {
-        return $this->getField('application');
+        return self::mapType(
+            $this->getField('application'),
+            'str'
+        );
     }
 
     /**
      * Returns the date & time that the token expires.
-     *
-     * @return \DateTime|null
      */
-    public function getExpiresAt()
+    public function getExpiresAt(): ?\DateTime
     {
-        return $this->getField('expires_at');
+        return self::mapType(
+            $this->getField('expires_at'),
+            \DateTime::class
+        );
     }
 
     /**
      * Returns whether the token is valid.
-     *
-     * @return boolean
      */
-    public function getIsValid()
+    public function getIsValid(): bool
     {
-        return $this->getField('is_valid');
+        return self::mapType(
+            $this->getField('is_valid'),
+            'bool'
+        );
     }
 
     /**
      * Returns the date & time the token was issued at.
-     *
-     * @return \DateTime|null
      */
-    public function getIssuedAt()
+    public function getIssuedAt(): ?\DateTime
     {
-        return $this->getField('issued_at');
+        return self::mapType(
+            $this->getField('issued_at'),
+            \DateTime::class
+        );
     }
 
     /**
      * Returns the scope permissions associated with the token.
-     *
-     * @return array
      */
-    public function getScopes()
+    public function getScopes(): array
     {
-        return $this->getField('scopes');
+        return self::mapType(
+            $this->getField('scopes'),
+            'arrOrBlank'
+        );
     }
 
     /**
      * Returns the login id of the user associated with the token.
-     *
-     * @return string|null
      */
-    public function getUserId()
+    public function getUserId(): ?string
     {
-        return $this->getField('user_id');
+        return self::mapType(
+            $this->getField('user_id'),
+            'str'
+        );
     }
 }

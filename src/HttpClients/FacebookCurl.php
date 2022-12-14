@@ -3,10 +3,7 @@
 namespace One23\GraphSdk\HttpClients;
 
 /**
- * Class FacebookCurl
- *
  * Abstraction for the procedural curl elements so that curl can be mocked and the implementation can be tested.
-
  */
 class FacebookCurl
 {

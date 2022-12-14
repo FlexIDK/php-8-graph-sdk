@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * @see https://github.com/sarciszewski/php-future/blob/master/src/Security.php#L37-L51
  */

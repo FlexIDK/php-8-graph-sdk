@@ -52,7 +52,6 @@ class GraphNode extends Collection
 
     /**
      * Determines if a value from Graph should be cast to DateTime.
-     *
      */
     public function shouldCastAsDateTime(string $key): bool
     {

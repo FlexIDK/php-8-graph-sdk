@@ -42,7 +42,7 @@ class Response
      *    a short-lived access token for a long-lived access token
      * - And sometimes nothing :/ but that'd be a bug.
      */
-    public function decodeBody()
+    public function decodeBody(): void
     {
         $decodedBody = json_decode($this->body, true);
 

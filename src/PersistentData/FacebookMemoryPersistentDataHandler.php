@@ -2,9 +2,6 @@
 
 namespace One23\GraphSdk\PersistentData;
 
-/**
- * Class FacebookMemoryPersistentDataHandler
- */
 class FacebookMemoryPersistentDataHandler implements PersistentDataInterface
 {
     /**

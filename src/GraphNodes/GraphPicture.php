@@ -2,49 +2,49 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-/**
- * Class GraphPicture
-
- */
 class GraphPicture extends GraphNode
 {
     /**
      * Returns true if user picture is silhouette.
-     *
-     * @return bool|null
      */
-    public function isSilhouette()
+    public function isSilhouette(): ?bool
     {
-        return $this->getField('is_silhouette');
+        return self::mapType(
+            $this->getField('is_silhouette'),
+            'boolOrNull'
+        );
     }
 
     /**
      * Returns the url of user picture if it exists
-     *
-     * @return string|null
      */
-    public function getUrl()
+    public function getUrl(): ?string
     {
-        return $this->getField('url');
+        return self::mapType(
+            $this->getField('url'),
+            'url'
+        );
     }
 
     /**
      * Returns the width of user picture if it exists
-     *
-     * @return int|null
      */
-    public function getWidth()
+    public function getWidth(): ?int
     {
-        return $this->getField('width');
+        return self::mapType(
+            $this->getField('width'),
+            'intGt0'
+        );
     }
 
     /**
      * Returns the height of user picture if it exists
-     *
-     * @return int|null
      */
-    public function getHeight()
+    public function getHeight(): ?int
     {
-        return $this->getField('height');
+        return self::mapType(
+            $this->getField('height'),
+            'intGt0'
+        );
     }
 }

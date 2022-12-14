@@ -4,10 +4,6 @@ namespace One23\GraphSdk\FileUpload;
 
 use One23\GraphSdk\Exceptions\SDKException;
 
-/**
- * Class FacebookFile
-
- */
 class File
 {
     /**

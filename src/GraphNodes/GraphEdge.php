@@ -6,10 +6,6 @@ use One23\GraphSdk\Request;
 use One23\GraphSdk\Url;
 use One23\GraphSdk\Exceptions\SDKException;
 
-/**
- * Class GraphEdge
-
- */
 class GraphEdge extends Collection
 {
     public function __construct(
@@ -90,13 +86,9 @@ class GraphEdge extends Collection
     /**
      * Gets the request object needed to make a next|previous page request.
      *
-     * @param string $direction The direction of the page: next|previous
-     *
-     * @return Request|null
-     *
      * @throws SDKException
      */
-    public function getPaginationRequest($direction)
+    public function getPaginationRequest(string $direction): ?Request
     {
         $pageUrl = $this->getPaginationUrl($direction);
         if (!$pageUrl) {
@@ -167,7 +159,7 @@ class GraphEdge extends Collection
         if (isset($this->metaData['summary']['total_count'])) {
             return self::mapType(
                 $this->metaData['summary']['total_count'],
-                'int'
+                'intGte0'
             );
         }
 
