@@ -3,7 +3,7 @@
 namespace One23\GraphSdk\HttpClients;
 
 use One23\GraphSdk\Http\GraphRawResponse;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 class FacebookStreamHttpClient implements FacebookHttpClientInterface
 {
@@ -46,7 +46,7 @@ class FacebookStreamHttpClient implements FacebookHttpClientInterface
         $rawHeaders = $this->facebookStream->getResponseHeaders();
 
         if ($rawBody === false || empty($rawHeaders)) {
-            throw new FacebookSDKException('Stream returned an empty response', 660);
+            throw new SDKException('Stream returned an empty response', 660);
         }
 
         $rawHeaders = implode("\r\n", $rawHeaders);

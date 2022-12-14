@@ -52,7 +52,7 @@ abstract class FacebookSignedRequestFromInputHelper
      *
      * @return AccessToken|null
      *
-     * @throws \One23\GraphSdk\Exceptions\FacebookSDKException
+     * @throws \One23\GraphSdk\Exceptions\SDKException
      */
     public function getAccessToken()
     {
@@ -66,7 +66,10 @@ abstract class FacebookSignedRequestFromInputHelper
 
             $expiresAt = $this->signedRequest->get('expires', 0);
 
-            return new AccessToken($accessToken, $expiresAt);
+            return new AccessToken(
+                (string)$accessToken,
+                (int)$expiresAt
+            );
         }
 
         return null;

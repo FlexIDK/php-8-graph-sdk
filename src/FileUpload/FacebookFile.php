@@ -2,7 +2,7 @@
 
 namespace One23\GraphSdk\FileUpload;
 
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class FacebookFile
@@ -34,7 +34,7 @@ class FacebookFile
      * @param int $maxLength
      * @param int $offset
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function __construct($filePath, $maxLength = -1, $offset = -1)
     {
@@ -47,18 +47,18 @@ class FacebookFile
     /**
      * Opens a stream for the file.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function open()
     {
         if (!$this->isRemoteFile($this->path) && !is_readable($this->path)) {
-            throw new FacebookSDKException('Failed to create FacebookFile entity. Unable to read resource: ' . $this->path . '.');
+            throw new SDKException('Failed to create FacebookFile entity. Unable to read resource: ' . $this->path . '.');
         }
 
         $this->stream = fopen($this->path, 'r');
 
         if (!$this->stream) {
-            throw new FacebookSDKException('Failed to create FacebookFile entity. Unable to open resource: ' . $this->path . '.');
+            throw new SDKException('Failed to create FacebookFile entity. Unable to open resource: ' . $this->path . '.');
         }
     }
 

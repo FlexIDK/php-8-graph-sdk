@@ -3,87 +3,82 @@
 namespace One23\GraphSdk;
 
 use One23\GraphSdk\Authentication\AccessToken;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 class FacebookApp implements \Serializable
 {
     /**
-     * @var string The app ID.
+     * The app ID.
      */
-    protected $id;
+    protected string $id;
 
     /**
-     * @var string The app secret.
+     * @throws SDKException
      */
-    protected $secret;
+    public function __construct(string|int $id, protected string $secret)
+    {
+        $this->id = (string)$id;
+    }
 
     /**
      * Returns the app ID.
-     *
-     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
      * Returns the app secret.
-     *
-     * @return string
      */
-    public function getSecret()
+    public function getSecret(): string
     {
         return $this->secret;
     }
 
     /**
      * Returns an app access token.
-     *
-     * @return AccessToken
      */
-    public function getAccessToken()
+    public function getAccessToken(): AccessToken
     {
         return new AccessToken($this->id . '|' . $this->secret);
     }
 
-    /**
-     * Serializes the FacebookApp entity as a string.
-     *
-     * @return string
-     */
-    public function serialize()
+    public function serialize(): string
     {
-        return implode('|', [$this->id, $this->secret]);
+        return implode('|', [
+            $this->id,
+            $this->secret
+        ]);
     }
 
-    /**
-     * Unserializes a string as a FacebookApp entity.
-     *
-     * @param string $serialized
-     */
-    public function unserialize($serialized)
+    public function unserialize(string $serialized)
     {
-        list($id, $secret) = explode('|', $serialized);
-
-        $this->__construct($id, $secret);
-    }
-
-    /**
-     * @param string $id
-     * @param string $secret
-     *
-     * @throws FacebookSDKException
-     */
-    public function __construct($id, $secret)
-    {
-        if (!is_string($id)
-          // Keeping this for BC. Integers greater than PHP_INT_MAX will make is_int() return false
-          && !is_int($id)) {
-            throw new FacebookSDKException('The "app_id" must be formatted as a string since many app ID\'s are greater than PHP_INT_MAX on some systems.');
+        if (isset($this->id)) {
+            throw new \LogicException('unserialize() is an internal function, it must not be called directly.');
         }
-        // We cast as a string in case a valid int was set on a 64-bit system and this is unserialised on a 32-bit system
-        $this->id = (string) $id;
-        $this->secret = $secret;
+
+        list($id, $secret) = explode('|', $serialized, 2);
+
+        $this->id       = (string)$id;
+        $this->secret   = (string)$secret;
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'id'        => $this->id,
+            'secret'    => $this->secret,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if (isset($this->id)) {
+            throw new \LogicException('__unserialize() is an internal function, it must not be called directly.');
+        }
+
+        $this->id       = $data['id'];
+        $this->secret   = $data['secret'];
     }
 }

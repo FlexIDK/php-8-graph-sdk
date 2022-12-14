@@ -2,16 +2,7 @@
 
 namespace One23\GraphSdk\Url;
 
-/**
- * Interface UrlDetectionInterface
-
- */
-interface UrlDetectionInterface
+/** @deprecated  */
+interface UrlDetectionInterface extends DetectionInterface
 {
-    /**
-     * Get the currently active URL.
-     *
-     * @return string
-     */
-    public function getCurrentUrl();
 }

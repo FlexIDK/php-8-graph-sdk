@@ -3,9 +3,9 @@
 namespace One23\GraphSdk\FileUpload;
 
 use One23\GraphSdk\Authentication\AccessToken;
-use One23\GraphSdk\Exceptions\FacebookResponseException;
-use One23\GraphSdk\Exceptions\FacebookResumableUploadException;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\ResponseException;
+use One23\GraphSdk\Exceptions\ResumableUploadException;
+use One23\GraphSdk\Exceptions\SDKException;
 use One23\GraphSdk\FacebookApp;
 use One23\GraphSdk\FacebookClient;
 use One23\GraphSdk\FacebookRequest;
@@ -58,7 +58,7 @@ class FacebookResumableUploader
      *
      * @return FacebookTransferChunk
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function start($endpoint, FacebookFile $file)
     {
@@ -95,7 +95,7 @@ class FacebookResumableUploader
      *
      * @return FacebookTransferChunk
      *
-     * @throws FacebookResponseException
+     * @throws ResponseException
      */
     public function transfer($endpoint, FacebookTransferChunk $chunk, $allowToThrow = false)
     {
@@ -108,9 +108,10 @@ class FacebookResumableUploader
 
         try {
             $response = $this->sendUploadRequest($endpoint, $params);
-        } catch (FacebookResponseException $e) {
+        }
+        catch (ResponseException $e) {
             $preException = $e->getPrevious();
-            if ($allowToThrow || !$preException instanceof FacebookResumableUploadException) {
+            if ($allowToThrow || !$preException instanceof ResumableUploadException) {
                 throw $e;
             }
 
@@ -140,7 +141,7 @@ class FacebookResumableUploader
      *
      * @return boolean
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function finish($endpoint, $uploadSessionId, $metadata = [])
     {

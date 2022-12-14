@@ -2,7 +2,7 @@
 
 namespace One23\GraphSdk\Authentication;
 
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class AccessTokenMetadata
@@ -23,12 +23,12 @@ class AccessTokenMetadata
     protected array $metadata = [];
 
     /**
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function __construct(array $metadata)
     {
         if (!isset($metadata['data'])) {
-            throw new FacebookSDKException('Unexpected debug token response data.', 401);
+            throw new SDKException('Unexpected debug token response data.', 401);
         }
 
         $this->metadata = $metadata['data'];
@@ -252,12 +252,12 @@ class AccessTokenMetadata
      *
      * @param string $appId
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateAppId($appId)
     {
         if ($this->getAppId() !== $appId) {
-            throw new FacebookSDKException('Access token metadata contains unexpected app ID.', 401);
+            throw new SDKException('Access token metadata contains unexpected app ID.', 401);
         }
     }
 
@@ -279,12 +279,12 @@ class AccessTokenMetadata
      *
      * @param string $userId
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateUserId($userId)
     {
         if ($this->getUserId() !== $userId) {
-            throw new FacebookSDKException('Access token metadata contains unexpected user ID.', 401);
+            throw new SDKException('Access token metadata contains unexpected user ID.', 401);
         }
     }
 
@@ -301,7 +301,7 @@ class AccessTokenMetadata
     /**
      * Ensures the access token has not expired yet.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateExpiration()
     {
@@ -310,7 +310,7 @@ class AccessTokenMetadata
         }
 
         if ($this->getExpiresAt()->getTimestamp() < time()) {
-            throw new FacebookSDKException('Inspection of access token metadata shows that the access token has expired.', 401);
+            throw new SDKException('Inspection of access token metadata shows that the access token has expired.', 401);
         }
     }
 

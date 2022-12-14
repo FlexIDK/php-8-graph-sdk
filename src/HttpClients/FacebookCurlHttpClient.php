@@ -3,7 +3,7 @@
 namespace One23\GraphSdk\HttpClients;
 
 use One23\GraphSdk\Http\GraphRawResponse;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class FacebookCurlHttpClient
@@ -48,7 +48,7 @@ class FacebookCurlHttpClient implements FacebookHttpClientInterface
         $this->sendRequest();
 
         if ($curlErrorCode = $this->facebookCurl->errno()) {
-            throw new FacebookSDKException($this->facebookCurl->error(), $curlErrorCode);
+            throw new SDKException($this->facebookCurl->error(), $curlErrorCode);
         }
 
         // Separate the raw headers from the raw body

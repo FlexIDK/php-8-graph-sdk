@@ -2,10 +2,7 @@
 
 namespace One23\GraphSdk\Exceptions;
 
-/**
- * Class FacebookAuthorizationException
-
- */
-class FacebookAuthorizationException extends FacebookSDKException
+/** @deprecated  */
+class FacebookAuthorizationException extends AuthorizationException
 {
 }

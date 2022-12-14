@@ -6,7 +6,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use ArrayAccess;
 use One23\GraphSdk\Authentication\AccessToken;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class BatchRequest
@@ -96,14 +96,14 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
      *
      * @param FacebookRequest $request
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function addFallbackDefaults(FacebookRequest $request)
     {
         if (!$request->getApp()) {
             $app = $this->getApp();
             if (!$app) {
-                throw new FacebookSDKException('Missing FacebookApp on FacebookRequest and no fallback detected on FacebookBatchRequest.');
+                throw new SDKException('Missing FacebookApp on FacebookRequest and no fallback detected on FacebookBatchRequest.');
             }
             $request->setApp($app);
         }
@@ -111,7 +111,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
         if (!$request->getAccessToken()) {
             $accessToken = $this->getAccessToken();
             if (!$accessToken) {
-                throw new FacebookSDKException('Missing access token on FacebookRequest and no fallback detected on FacebookBatchRequest.');
+                throw new SDKException('Missing access token on FacebookRequest and no fallback detected on FacebookBatchRequest.');
             }
             $request->setAccessToken($accessToken);
         }
@@ -124,7 +124,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
      *
      * @return string|null
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function extractFileAttachments(FacebookRequest $request)
     {
@@ -173,16 +173,16 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
     /**
      * Validate the request count before sending them as a batch.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateBatchRequestCount()
     {
         $batchCount = count($this->requests);
         if ($batchCount === 0) {
-            throw new FacebookSDKException('There are no batch requests to send.');
+            throw new SDKException('There are no batch requests to send.');
         } elseif ($batchCount > 50) {
             // Per: https://developers.facebook.com/docs/graph-api/making-multiple-requests#limits
-            throw new FacebookSDKException('You cannot send more than 50 batch requests at a time.');
+            throw new SDKException('You cannot send more than 50 batch requests at a time.');
         }
     }
 

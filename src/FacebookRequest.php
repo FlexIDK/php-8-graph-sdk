@@ -3,12 +3,12 @@
 namespace One23\GraphSdk;
 
 use One23\GraphSdk\Authentication\AccessToken;
-use One23\GraphSdk\Url\FacebookUrlManipulator;
+use One23\GraphSdk\Url;
 use One23\GraphSdk\FileUpload\FacebookFile;
 use One23\GraphSdk\FileUpload\FacebookVideo;
 use One23\GraphSdk\Http\RequestBodyMultipart;
 use One23\GraphSdk\Http\RequestBodyUrlEncoded;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class Request
@@ -22,9 +22,9 @@ class FacebookRequest
     protected $app;
 
     /**
-     * @var string|null The access token to use for this request.
+     * The access token to use for this request.
      */
-    protected $accessToken;
+    protected ?string $accessToken = null;
 
     /**
      * @var string The HTTP method for this request.
@@ -61,19 +61,15 @@ class FacebookRequest
      */
     protected $graphVersion;
 
-    /**
-     * Creates a new Request entity.
-     *
-     * @param FacebookApp|null        $app
-     * @param AccessToken|string|null $accessToken
-     * @param string|null             $method
-     * @param string|null             $endpoint
-     * @param array|null              $params
-     * @param string|null             $eTag
-     * @param string|null             $graphVersion
-     */
-    public function __construct(FacebookApp $app = null, $accessToken = null, $method = null, $endpoint = null, array $params = [], $eTag = null, $graphVersion = null)
-    {
+    public function __construct(
+        FacebookApp $app = null,
+        string $accessToken = null,
+        string $method = null,
+        string $endpoint = null,
+        array $params = [],
+        string $eTag = null,
+        string $graphVersion = null
+    ) {
         $this->setApp($app);
         $this->setAccessToken($accessToken);
         $this->setMethod($method);
@@ -100,7 +96,7 @@ class FacebookRequest
      *
      * @return FacebookRequest
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function setAccessTokenFromParams($accessToken)
     {
@@ -108,7 +104,7 @@ class FacebookRequest
         if (!$existingAccessToken) {
             $this->setAccessToken($accessToken);
         } elseif ($accessToken !== $existingAccessToken) {
-            throw new FacebookSDKException('Access token mismatch. The access token provided in the FacebookRequest and the one provided in the URL or POST params do not match.');
+            throw new SDKException('Access token mismatch. The access token provided in the FacebookRequest and the one provided in the URL or POST params do not match.');
         }
 
         return $this;
@@ -164,13 +160,13 @@ class FacebookRequest
     /**
      * Validate that an access token exists for this request.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateAccessToken()
     {
         $accessToken = $this->getAccessToken();
         if (!$accessToken) {
-            throw new FacebookSDKException('You must provide an access token.');
+            throw new SDKException('You must provide an access token.');
         }
     }
 
@@ -372,7 +368,7 @@ class FacebookRequest
      *
      * @return FacebookRequest
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function setParams(array $params = [])
     {
@@ -407,12 +403,12 @@ class FacebookRequest
 
     /**
      * Return the access token for this request as an AccessToken entity.
-     *
-     * @return AccessToken|null
      */
-    public function getAccessTokenEntity()
+    public function getAccessTokenEntity(): ?AccessToken
     {
-        return $this->accessToken ? new AccessToken($this->accessToken) : null;
+        return $this->accessToken
+            ? new AccessToken($this->accessToken)
+            : null;
     }
 
     /**
@@ -446,14 +442,14 @@ class FacebookRequest
     {
         $this->validateMethod();
 
-        $graphVersion = FacebookUrlManipulator::forceSlashPrefix($this->graphVersion);
-        $endpoint = FacebookUrlManipulator::forceSlashPrefix($this->getEndpoint());
+        $graphVersion = Url\Manipulator::forceSlashPrefix($this->graphVersion);
+        $endpoint = Url\Manipulator::forceSlashPrefix($this->getEndpoint());
 
         $url = $graphVersion . $endpoint;
 
         if ($this->getMethod() !== 'POST') {
             $params = $this->getParams();
-            $url = FacebookUrlManipulator::appendParamsToUrl($url, $params);
+            $url = Url\Manipulator::appendParamsToUrl($url, $params);
         }
 
         return $url;
@@ -462,16 +458,16 @@ class FacebookRequest
     /**
      * Validate that the HTTP method is set.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateMethod()
     {
         if (!$this->method) {
-            throw new FacebookSDKException('HTTP method not specified.');
+            throw new SDKException('HTTP method not specified.');
         }
 
         if (!in_array($this->method, ['GET', 'POST', 'DELETE'])) {
-            throw new FacebookSDKException('Invalid HTTP method specified.');
+            throw new SDKException('Invalid HTTP method specified.');
         }
     }
 
@@ -493,19 +489,19 @@ class FacebookRequest
      *
      * @return FacebookRequest
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function setEndpoint($endpoint)
     {
         // Harvest the access token from the endpoint to keep things in sync
-        $params = FacebookUrlManipulator::getParamsAsArray($endpoint);
+        $params = Url\Manipulator::getParamsAsArray($endpoint);
         if (isset($params['access_token'])) {
             $this->setAccessTokenFromParams($params['access_token']);
         }
 
         // Clean the token & app secret proof from the endpoint.
         $filterParams = ['access_token', 'appsecret_proof'];
-        $this->endpoint = FacebookUrlManipulator::removeParamsFromUrl($endpoint, $filterParams);
+        $this->endpoint = Url\Manipulator::removeParamsFromUrl($endpoint, $filterParams);
 
         return $this;
     }

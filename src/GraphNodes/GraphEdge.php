@@ -3,8 +3,8 @@
 namespace One23\GraphSdk\GraphNodes;
 
 use One23\GraphSdk\FacebookRequest;
-use One23\GraphSdk\Url\FacebookUrlManipulator;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Url;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class GraphEdge
@@ -122,7 +122,7 @@ class GraphEdge extends Collection
      *
      * @return FacebookRequest|null
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getNextPageRequest()
     {
@@ -136,7 +136,7 @@ class GraphEdge extends Collection
      *
      * @return FacebookRequest|null
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getPaginationRequest($direction)
     {
@@ -158,7 +158,7 @@ class GraphEdge extends Collection
      *
      * @return string|null
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getPaginationUrl($direction)
     {
@@ -171,18 +171,18 @@ class GraphEdge extends Collection
 
         $pageUrl = $this->metaData['paging'][$direction];
 
-        return FacebookUrlManipulator::baseGraphUrlEndpoint($pageUrl);
+        return Url\Manipulator::baseGraphUrlEndpoint($pageUrl);
     }
 
     /**
      * Validates whether or not we can paginate on this request.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function validateForPagination()
     {
         if ($this->request->getMethod() !== 'GET') {
-            throw new FacebookSDKException('You can only paginate on a GET request.', 720);
+            throw new SDKException('You can only paginate on a GET request.', 720);
         }
     }
 
@@ -191,7 +191,7 @@ class GraphEdge extends Collection
      *
      * @return FacebookRequest|null
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getPreviousPageRequest()
     {

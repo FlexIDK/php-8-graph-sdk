@@ -10,7 +10,7 @@ use ArrayAccess;
  * Class FacebookBatchResponse
 
  */
-class FacebookBatchResponse extends FacebookResponse implements IteratorAggregate, ArrayAccess
+class FacebookBatchResponse extends Response implements IteratorAggregate, ArrayAccess
 {
     /**
      * @var FacebookBatchRequest The original entity that made the batch request.
@@ -18,17 +18,14 @@ class FacebookBatchResponse extends FacebookResponse implements IteratorAggregat
     protected $batchRequest;
 
     /**
-     * @var array An array of FacebookResponse entities.
+     * An array of Response entities.
      */
-    protected $responses = [];
+    protected array $responses = [];
 
     /**
      * Creates a new Response entity.
-     *
-     * @param FacebookBatchRequest $batchRequest
-     * @param FacebookResponse     $response
      */
-    public function __construct(FacebookBatchRequest $batchRequest, FacebookResponse $response)
+    public function __construct(FacebookBatchRequest $batchRequest, Response $response)
     {
         $this->batchRequest = $batchRequest;
 
@@ -43,11 +40,9 @@ class FacebookBatchResponse extends FacebookResponse implements IteratorAggregat
     }
 
     /**
-     * Returns an array of FacebookResponse entities.
-     *
-     * @return array
+     * Returns an array of Response entities.
      */
-    public function getResponses()
+    public function getResponses(): array
     {
         return $this->responses;
     }
@@ -99,7 +94,7 @@ class FacebookBatchResponse extends FacebookResponse implements IteratorAggregat
         // @TODO With PHP 5.5 support, this becomes array_column($response['headers'], 'value', 'name')
         $httpResponseHeaders = isset($response['headers']) ? $this->normalizeBatchHeaders($response['headers']) : [];
 
-        $this->responses[$originalRequestName] = new FacebookResponse(
+        $this->responses[$originalRequestName] = new Response(
             $originalRequest,
             $httpResponseBody,
             $httpResponseCode,

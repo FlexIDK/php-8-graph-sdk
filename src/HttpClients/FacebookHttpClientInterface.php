@@ -19,7 +19,7 @@ interface FacebookHttpClientInterface
      *
      * @return \One23\GraphSdk\Http\GraphRawResponse Raw response from the server.
      *
-     * @throws \One23\GraphSdk\Exceptions\FacebookSDKException
+     * @throws \One23\GraphSdk\Exceptions\SDKException
      */
     public function send($url, $method, $body, array $headers, $timeOut);
 }

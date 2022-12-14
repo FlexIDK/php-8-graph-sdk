@@ -5,7 +5,7 @@ namespace One23\GraphSdk;
 use One23\GraphSdk\HttpClients\FacebookHttpClientInterface;
 use One23\GraphSdk\HttpClients\FacebookCurlHttpClient;
 use One23\GraphSdk\HttpClients\FacebookStreamHttpClient;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class FacebookClient
@@ -119,7 +119,7 @@ class FacebookClient
      *
      * @return FacebookBatchResponse
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function sendBatchRequest(FacebookBatchRequest $request)
     {
@@ -134,11 +134,9 @@ class FacebookClient
      *
      * @param FacebookRequest $request
      *
-     * @return FacebookResponse
-     *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
-    public function sendRequest(FacebookRequest $request)
+    public function sendRequest(FacebookRequest $request): Response
     {
         if (get_class($request) === 'One23\GraphSdk\FacebookRequest') {
             $request->validateAccessToken();
@@ -154,13 +152,13 @@ class FacebookClient
             $timeOut = static::DEFAULT_VIDEO_UPLOAD_REQUEST_TIMEOUT;
         }
 
-        // Should throw `FacebookSDKException` exception on HTTP client error.
+        // Should throw `SDKException` exception on HTTP client error.
         // Don't catch to allow it to bubble up.
         $rawResponse = $this->httpClientHandler->send($url, $method, $body, $headers, $timeOut);
 
         static::$requestCount++;
 
-        $returnResponse = new FacebookResponse(
+        $returnResponse = new Response(
             $request,
             $rawResponse->getBody(),
             $rawResponse->getHttpResponseCode(),

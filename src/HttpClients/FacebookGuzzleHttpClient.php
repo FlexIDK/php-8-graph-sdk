@@ -3,7 +3,7 @@
 namespace One23\GraphSdk\HttpClients;
 
 use One23\GraphSdk\Http\GraphRawResponse;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
@@ -45,7 +45,7 @@ class FacebookGuzzleHttpClient implements FacebookHttpClientInterface
             $rawResponse = $e->getResponse();
 
             if ($e->getPrevious() instanceof RingException || !$rawResponse instanceof ResponseInterface) {
-                throw new FacebookSDKException($e->getMessage(), $e->getCode());
+                throw new SDKException($e->getMessage(), $e->getCode());
             }
         }
 

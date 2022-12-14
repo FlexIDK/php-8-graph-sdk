@@ -4,14 +4,12 @@ namespace One23\GraphSdk\Helpers;
 
 use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Authentication\OAuth2Client;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\SDKException;
 use One23\GraphSdk\PersistentData\FacebookSessionPersistentDataHandler;
 use One23\GraphSdk\PersistentData\PersistentDataInterface;
-use One23\GraphSdk\PseudoRandomString\PseudoRandomStringGeneratorFactory;
-use One23\GraphSdk\PseudoRandomString\PseudoRandomStringGeneratorInterface;
-use One23\GraphSdk\Url\FacebookUrlDetectionHandler;
-use One23\GraphSdk\Url\FacebookUrlManipulator;
-use One23\GraphSdk\Url\UrlDetectionInterface;
+use One23\GraphSdk\PseudoRandomString\GeneratorFactory;
+use One23\GraphSdk\PseudoRandomString\Generators\GeneratorInterface;
+use One23\GraphSdk\Url;
 
 /**
  * Class FacebookRedirectLoginHelper
@@ -19,85 +17,53 @@ use One23\GraphSdk\Url\UrlDetectionInterface;
  */
 class FacebookRedirectLoginHelper
 {
-    /**
-     * @const int The length of CSRF string to validate the login link.
-     */
     const CSRF_LENGTH = 32;
 
-    /**
-     * @var OAuth2Client The OAuth 2.0 client service.
-     */
-    protected $oAuth2Client;
+    protected Url\DetectionInterface $urlDetectionHandler;
 
-    /**
-     * @var UrlDetectionInterface The URL detection handler.
-     */
-    protected $urlDetectionHandler;
+    protected PersistentDataInterface $persistentDataHandler;
 
-    /**
-     * @var PersistentDataInterface The persistent data handler.
-     */
-    protected $persistentDataHandler;
+    protected GeneratorInterface $pseudoRandomStringGenerator;
 
-    /**
-     * @var PseudoRandomStringGeneratorInterface The cryptographically secure pseudo-random string generator.
-     */
-    protected $pseudoRandomStringGenerator;
-
-    /**
-     * @param OAuth2Client                              $oAuth2Client          The OAuth 2.0 client service.
-     * @param PersistentDataInterface|null              $persistentDataHandler The persistent data handler.
-     * @param UrlDetectionInterface|null                $urlHandler            The URL detection handler.
-     * @param PseudoRandomStringGeneratorInterface|null $prsg                  The cryptographically secure pseudo-random string generator.
-     */
-    public function __construct(OAuth2Client $oAuth2Client, PersistentDataInterface $persistentDataHandler = null, UrlDetectionInterface $urlHandler = null, PseudoRandomStringGeneratorInterface $prsg = null)
-    {
-        $this->oAuth2Client = $oAuth2Client;
+    public function __construct(
+        protected OAuth2Client $oAuth2Client,
+        PersistentDataInterface $persistentDataHandler = null,
+        Url\DetectionInterface $urlHandler = null,
+        GeneratorInterface $prsg = null
+    ) {
         $this->persistentDataHandler = $persistentDataHandler ?: new FacebookSessionPersistentDataHandler();
-        $this->urlDetectionHandler = $urlHandler ?: new FacebookUrlDetectionHandler();
-        $this->pseudoRandomStringGenerator = PseudoRandomStringGeneratorFactory::createPseudoRandomStringGenerator($prsg);
+        $this->urlDetectionHandler = $urlHandler ?: new Url\DetectionHandler();
+        $this->pseudoRandomStringGenerator = GeneratorFactory::createPseudoRandomStringGenerator($prsg);
     }
 
     /**
      * Returns the persistent data handler.
-     *
-     * @return PersistentDataInterface
      */
-    public function getPersistentDataHandler()
+    public function getPersistentDataHandler(): PersistentDataInterface
     {
         return $this->persistentDataHandler;
     }
 
     /**
      * Returns the URL detection handler.
-     *
-     * @return UrlDetectionInterface
      */
-    public function getUrlDetectionHandler()
+    public function getUrlDetectionHandler(): Url\DetectionInterface
     {
         return $this->urlDetectionHandler;
     }
 
     /**
      * Returns the cryptographically secure pseudo-random string generator.
-     *
-     * @return PseudoRandomStringGeneratorInterface
      */
-    public function getPseudoRandomStringGenerator()
+    public function getPseudoRandomStringGenerator(): GeneratorInterface
     {
         return $this->pseudoRandomStringGenerator;
     }
 
     /**
      * Returns the URL to send the user in order to login to Facebook.
-     *
-     * @param string $redirectUrl The URL Facebook should redirect users to after login.
-     * @param array  $scope       List of permissions to request during login.
-     * @param string $separator   The separator to use in http_build_query().
-     *
-     * @return string
      */
-    public function getLoginUrl($redirectUrl, array $scope = [], $separator = '&')
+    public function getLoginUrl(string $redirectUrl, array $scope = [], string $separator = '&'): string
     {
         return $this->makeUrl($redirectUrl, $scope, [], $separator);
     }
@@ -105,16 +71,13 @@ class FacebookRedirectLoginHelper
     /**
      * Stores CSRF state and returns a URL to which the user should be sent to in order to continue the login process with Facebook.
      *
-     * @param string $redirectUrl The URL Facebook should redirect users to after login.
-     * @param array  $scope       List of permissions to request during login.
-     * @param array  $params      An array of parameters to generate URL.
-     * @param string $separator   The separator to use in http_build_query().
-     *
-     * @return string
+     * @throws SDKException
      */
-    private function makeUrl($redirectUrl, array $scope, array $params = [], $separator = '&')
+    private function makeUrl(string $redirectUrl, array $scope, array $params = [], string $separator = '&'): string
     {
-        $state = $this->persistentDataHandler->get('state') ?: $this->pseudoRandomStringGenerator->getPseudoRandomString(static::CSRF_LENGTH);
+        $state = $this->persistentDataHandler->get('state')
+            ?: $this->pseudoRandomStringGenerator->getPseudoRandomString(static::CSRF_LENGTH);
+
         $this->persistentDataHandler->set('state', $state);
 
         return $this->oAuth2Client->getAuthorizationUrl($redirectUrl, $state, $scope, $params, $separator);
@@ -123,22 +86,16 @@ class FacebookRedirectLoginHelper
     /**
      * Returns the URL to send the user in order to log out of Facebook.
      *
-     * @param AccessToken|string $accessToken The access token that will be logged out.
-     * @param string             $next        The url Facebook should redirect the user to after a successful logout.
-     * @param string             $separator   The separator to use in http_build_query().
-     *
-     * @return string
-     *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
-    public function getLogoutUrl($accessToken, $next, $separator = '&')
+    public function getLogoutUrl(AccessToken|string $accessToken, string $next, string $separator = '&'): string
     {
         if (!$accessToken instanceof AccessToken) {
             $accessToken = new AccessToken($accessToken);
         }
 
         if ($accessToken->isAppAccessToken()) {
-            throw new FacebookSDKException('Cannot generate a logout URL with an app access token.', 722);
+            throw new SDKException('Cannot generate a logout URL with an app access token.', 722);
         }
 
         $params = [
@@ -188,7 +145,7 @@ class FacebookRedirectLoginHelper
      *
      * @return AccessToken|null
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getAccessToken($redirectUrl = null)
     {
@@ -201,7 +158,7 @@ class FacebookRedirectLoginHelper
 
         $redirectUrl = $redirectUrl ?: $this->urlDetectionHandler->getCurrentUrl();
         // At minimum we need to remove the 'code', 'enforce_https' and 'state' params
-        $redirectUrl = FacebookUrlManipulator::removeParamsFromUrl($redirectUrl, ['code', 'enforce_https', 'state']);
+        $redirectUrl = Url\Manipulator::removeParamsFromUrl($redirectUrl, ['code', 'enforce_https', 'state']);
 
         return $this->oAuth2Client->getAccessTokenFromCode($code, $redirectUrl);
     }
@@ -231,24 +188,24 @@ class FacebookRedirectLoginHelper
     /**
      * Validate the request against a cross-site request forgery.
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     protected function validateCsrf()
     {
         $state = $this->getState();
         if (!$state) {
-            throw new FacebookSDKException('Cross-site request forgery validation failed. Required GET param "state" missing.');
+            throw new SDKException('Cross-site request forgery validation failed. Required GET param "state" missing.');
         }
         $savedState = $this->persistentDataHandler->get('state');
         if (!$savedState) {
-            throw new FacebookSDKException('Cross-site request forgery validation failed. Required param "state" missing from persistent data.');
+            throw new SDKException('Cross-site request forgery validation failed. Required param "state" missing from persistent data.');
         }
 
         if (\hash_equals($savedState, $state)) {
             return;
         }
 
-        throw new FacebookSDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');
+        throw new SDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');
     }
 
     /**

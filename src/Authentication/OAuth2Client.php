@@ -5,10 +5,10 @@ namespace One23\GraphSdk\Authentication;
 use One23\GraphSdk\Facebook;
 use One23\GraphSdk\FacebookApp;
 use One23\GraphSdk\FacebookRequest;
-use One23\GraphSdk\FacebookResponse;
+use One23\GraphSdk\Response;
 use One23\GraphSdk\FacebookClient;
-use One23\GraphSdk\Exceptions\FacebookResponseException;
-use One23\GraphSdk\Exceptions\FacebookSDKException;
+use One23\GraphSdk\Exceptions\ResponseException;
+use One23\GraphSdk\Exceptions\SDKException;
 
 /**
  * Class OAuth2Client
@@ -132,7 +132,7 @@ class OAuth2Client
      *
      * @return AccessToken
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getAccessTokenFromCode($code, $redirectUri = '')
     {
@@ -149,17 +149,15 @@ class OAuth2Client
      *
      * @param array $params
      *
-     * @return AccessToken
-     *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
-    protected function requestAnAccessToken(array $params)
+    protected function requestAnAccessToken(array $params): AccessToken
     {
         $response = $this->sendRequestWithClientParams('/oauth/access_token', $params);
         $data = $response->getDecodedBody();
 
         if (!isset($data['access_token'])) {
-            throw new FacebookSDKException('Access token was not returned from Graph.', 401);
+            throw new SDKException('Access token was not returned from Graph.', 401);
         }
 
         // Graph returns two different key names for expiration time
@@ -169,14 +167,18 @@ class OAuth2Client
             // For exchanging a short lived token with a long lived token.
             // The expiration time in seconds will be returned as "expires".
             $expiresAt = time() + $data['expires'];
-        } elseif (isset($data['expires_in'])) {
+        }
+        elseif (isset($data['expires_in'])) {
             // For exchanging a code for a short lived access token.
             // The expiration time in seconds will be returned as "expires_in".
             // See: https://developers.facebook.com/docs/facebook-login/access-tokens#long-via-code
             $expiresAt = time() + $data['expires_in'];
         }
 
-        return new AccessToken($data['access_token'], $expiresAt);
+        return new AccessToken(
+            (string)$data['access_token'],
+            (int)$expiresAt
+        );
     }
 
     /**
@@ -186,9 +188,9 @@ class OAuth2Client
      * @param array                   $params
      * @param AccessToken|string|null $accessToken
      *
-     * @return FacebookResponse
+     * @return Response
      *
-     * @throws FacebookResponseException
+     * @throws ResponseException
      */
     protected function sendRequestWithClientParams($endpoint, array $params, $accessToken = null)
     {
@@ -229,7 +231,7 @@ class OAuth2Client
      *
      * @return AccessToken
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getLongLivedAccessToken($accessToken)
     {
@@ -250,7 +252,7 @@ class OAuth2Client
      *
      * @return AccessToken
      *
-     * @throws FacebookSDKException
+     * @throws SDKException
      */
     public function getCodeFromLongLivedAccessToken($accessToken, $redirectUri = '')
     {
@@ -262,7 +264,7 @@ class OAuth2Client
         $data = $response->getDecodedBody();
 
         if (!isset($data['code'])) {
-            throw new FacebookSDKException('Code was not returned from Graph.', 401);
+            throw new SDKException('Code was not returned from Graph.', 401);
         }
 
         return $data['code'];

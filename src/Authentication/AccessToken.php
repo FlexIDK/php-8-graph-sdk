@@ -7,14 +7,14 @@ class AccessToken
     /**
      * Date when token expires.
      */
-    protected ?\DateTime $expiresAt;
+    protected ?\DateTime $expiresAt = null;
 
     /**
      * Create a new access token entity.
      */
     public function __construct(protected string $accessToken, int $expiresAt = 0)
     {
-        if ($expiresAt) {
+        if ($expiresAt > 0) {
             $this->setExpiresAtFromTimeStamp($expiresAt);
         }
     }
