@@ -15,11 +15,11 @@ abstract class FacebookSignedRequestFromInputHelper
 
     protected OAuth2Client $oAuth2Client;
 
-    /**
-     * Initialize the helper and process available signed request data.
-     */
-    public function __construct(protected FacebookApp $app, FacebookClient $client, string $graphVersion = null)
-    {
+    public function __construct(
+        protected FacebookApp $app,
+        FacebookClient $client,
+        string $graphVersion = null
+    ) {
         $graphVersion = $graphVersion ?: Facebook::DEFAULT_GRAPH_VERSION;
         $this->oAuth2Client = new OAuth2Client($this->app, $client, $graphVersion);
 

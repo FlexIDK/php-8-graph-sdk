@@ -16,8 +16,6 @@ class FacebookSessionPersistentDataHandler implements PersistentDataInterface
     protected string $sessionPrefix = 'FBRLH_';
 
     /**
-     * Init the session handler.
-     *
      * @throws SDKException
      */
     public function __construct(bool $enableSessionCheck = true)

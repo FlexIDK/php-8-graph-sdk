@@ -9,9 +9,6 @@ class AccessToken
      */
     protected ?\DateTime $expiresAt = null;
 
-    /**
-     * Create a new access token entity.
-     */
     public function __construct(protected string $accessToken, int $expiresAt = 0)
     {
         if ($expiresAt > 0) {

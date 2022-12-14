@@ -17,9 +17,6 @@ class FacebookGuzzleHttpClient implements FacebookHttpClientInterface
      */
     protected $guzzleClient;
 
-    /**
-     * @param \GuzzleHttp\Client|null The Guzzle client.
-     */
     public function __construct(Client $guzzleClient = null)
     {
         $this->guzzleClient = $guzzleClient ?: new Client();

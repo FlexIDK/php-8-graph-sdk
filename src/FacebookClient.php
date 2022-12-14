@@ -60,14 +60,10 @@ class FacebookClient
      */
     protected $httpClientHandler;
 
-    /**
-     * Instantiates a new FacebookClient object.
-     *
-     * @param FacebookHttpClientInterface|null $httpClientHandler
-     * @param boolean                          $enableBeta
-     */
-    public function __construct(FacebookHttpClientInterface $httpClientHandler = null, $enableBeta = false)
-    {
+    public function __construct(
+        FacebookHttpClientInterface $httpClientHandler = null,
+        bool $enableBeta = false
+    ) {
         $this->httpClientHandler = $httpClientHandler ?: $this->detectHttpClientHandler();
         $this->enableBetaMode = $enableBeta;
     }
@@ -115,18 +111,14 @@ class FacebookClient
     /**
      * Makes a batched request to Graph and returns the result.
      *
-     * @param FacebookBatchRequest $request
-     *
-     * @return FacebookBatchResponse
-     *
      * @throws SDKException
      */
-    public function sendBatchRequest(FacebookBatchRequest $request)
+    public function sendBatchRequest(FacebookBatchRequest $request): BatchResponse
     {
         $request->prepareRequestsForBatch();
         $facebookResponse = $this->sendRequest($request);
 
-        return new FacebookBatchResponse($request, $facebookResponse);
+        return new BatchResponse($request, $facebookResponse);
     }
 
     /**

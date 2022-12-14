@@ -23,11 +23,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     protected $items = [];
 
-    /**
-     * Create a new collection.
-     *
-     * @param array $items
-     */
     public function __construct(array $items = [])
     {
         $this->items = $items;

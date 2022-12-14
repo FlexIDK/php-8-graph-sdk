@@ -11,11 +11,11 @@ class GraphRawResponse
 
     protected int $httpResponseCode;
 
-    /**
-     * Creates a new GraphRawResponse entity.
-     */
-    public function __construct(string|array $headers, protected string $body, ?int $httpStatusCode = null)
-    {
+    public function __construct(
+        string|array $headers,
+        protected string $body,
+        ?int $httpStatusCode = null
+    ) {
         if (is_array($headers)) {
             $this->headers = $headers;
         }

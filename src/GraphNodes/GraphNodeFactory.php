@@ -45,9 +45,6 @@ class GraphNodeFactory
      */
     protected $decodedBody;
 
-    /**
-     * Init this Graph object.
-     */
     public function __construct(Response $response)
     {
         $this->response = $response;

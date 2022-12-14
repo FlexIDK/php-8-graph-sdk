@@ -31,20 +31,23 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
   - GraphNodes\Collection
     - getProperty() -> getField()
 - Rename && refactoring class:
+  - Facebook -> BatchResponse
   - FacebookResponse -> Response 
-  - Url\
-    - FacebookUrlManipulator -> Url\Manipulator
-    - UrlDetectionInterface -> Url\DetectionInterface
   - Exceptions\
-    - FacebookAuthenticationException -> Exceptions\AuthenticationException
-    - FacebookAuthorizationException -> Exceptions\AuthorizationException
-    - FacebookClientException -> Exceptions\ClientException
-    - FacebookOtherException -> Exceptions\OtherException
-    - FacebookResponseException -> Exceptions\ResponseException
-    - FacebookResumableUploadException -> Exceptions\ResumableUploadException
-    - FacebookSDKException -> Exceptions\SDKException
-    - FacebookServerException -> Exceptions\ServerException
-    - FacebookThrottleException -> Exceptions\ThrottleException
+    - FacebookAuthenticationException -> AuthenticationException
+    - FacebookAuthorizationException -> AuthorizationException
+    - FacebookClientException -> ClientException
+    - FacebookOtherException -> OtherException
+    - FacebookResponseException -> ResponseException
+    - FacebookResumableUploadException -> ResumableUploadException
+    - FacebookSDKException -> SDKException
+    - FacebookServerException -> ServerException
+    - FacebookThrottleException -> ThrottleException
+  - FileUpload\
+    - FacebookFile -> File
+    - FacebookResumableUploader -> ResumableUploader
+    - FacebookTransferChunk -> TransferChunk
+    - FacebookVideo -> Video
   - PseudoRandomString\
     - McryptPseudoRandomStringGenerator -> PseudoRandomString\Generators\McryptGenerator (deprecate)
     - OpenSslPseudoRandomStringGenerator -> PseudoRandomString\Generators\OpenSslGenerator
@@ -52,7 +55,11 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - UrandomPseudoRandomStringGenerator -> PseudoRandomString\Generators\UrandomGenerator
     - PseudoRandomStringGeneratorInterface -> PseudoRandomString\Generators\GeneratorInterface
     - PseudoRandomStringGeneratorFactory -> PseudoRandomString\GeneratorFactory
+  - Url\
+    - FacebookUrlManipulator -> Url\Manipulator
+    - UrlDetectionInterface -> Url\DetectionInterface
 - **Deprecate** (remove in next version):
+  - FacebookBatchResponse
   - FacebookResponse
   - Exceptions\
     - FacebookAuthenticationException
@@ -64,6 +71,11 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - FacebookSDKException
     - FacebookServerException
     - FacebookThrottleException
+  - FileUpload\
+    - FacebookFile
+    - FacebookResumableUploader
+    - FacebookTransferChunk
+    - FacebookVideo
   - PseudoRandomString\
     - McryptPseudoRandomStringGenerator
     - OpenSslPseudoRandomStringGenerator
@@ -76,6 +88,7 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
 ## What's new
 
 - Global exception: \One23\GraphSdk\Exception
+- FileUpload\Mimetypes - replace to \GuzzleHttp\Psr7\MimeType
 - ...
   
 ## Usage

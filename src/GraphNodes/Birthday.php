@@ -28,10 +28,8 @@ class Birthday extends DateTime
      *  YYYY
      *
      * @link https://developers.facebook.com/docs/graph-api/reference/user
-     *
-     * @param string $date
      */
-    public function __construct($date)
+    public function __construct(string $date)
     {
         $parts = explode('/', $date);
 

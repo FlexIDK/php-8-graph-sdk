@@ -2,7 +2,7 @@
 
 namespace One23\GraphSdk\Http;
 
-use One23\GraphSdk\FileUpload\FacebookFile;
+use One23\GraphSdk\FileUpload\File;
 
 /**
  * Some things copied from Guzzle
@@ -16,8 +16,11 @@ class RequestBodyMultipart implements RequestBodyInterface
      */
     private string $boundary;
 
-    public function __construct(private readonly array $params = [], private readonly  array $files = [], string $boundary = null)
-    {
+    public function __construct(
+        private readonly array $params = [],
+        private readonly  array $files = [],
+        string $boundary = null
+    ) {
         $this->boundary = $boundary ?: uniqid();
     }
 
@@ -75,7 +78,7 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * Get the string needed to transfer a file.
      */
-    private function getFileString(string $name, FacebookFile $file): string
+    private function getFileString(string $name, File $file): string
     {
         return sprintf(
             "--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"%s\r\n\r\n%s\r\n",
@@ -90,7 +93,7 @@ class RequestBodyMultipart implements RequestBodyInterface
     /**
      * Get the headers needed before transferring the content of a POST file.
      */
-    protected function getFileHeaders(FacebookFile $file): string
+    protected function getFileHeaders(File $file): string
     {
         return "\r\nContent-Type: {$file->getMimetype()}";
     }

@@ -17,12 +17,12 @@ class SignedRequest
     protected ?array $payload;
 
     /**
-     * Instantiate a new SignedRequest entity.
-     *
      * @throws SDKException
      */
-    public function __construct(protected FacebookApp $app, protected ?string $rawSignedRequest = null)
-    {
+    public function __construct(
+        protected FacebookApp $app,
+        protected ?string $rawSignedRequest = null
+    ) {
         $this->parse();
     }
 

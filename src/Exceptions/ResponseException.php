@@ -8,9 +8,6 @@ class ResponseException extends SDKException
 {
     protected array $responseData;
 
-    /**
-     * Creates a ResponseException.
-     */
     public function __construct(protected Response $response, SDKException $previousException = null)
     {
         $this->responseData = $response->getDecodedBody();

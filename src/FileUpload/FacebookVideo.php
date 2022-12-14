@@ -2,10 +2,7 @@
 
 namespace One23\GraphSdk\FileUpload;
 
-/**
- * Class FacebookVideo
-
- */
+/** @deprecated  */
 class FacebookVideo extends FacebookFile
 {
 }

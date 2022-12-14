@@ -4,8 +4,8 @@ namespace One23\GraphSdk;
 
 use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Url;
-use One23\GraphSdk\FileUpload\FacebookFile;
-use One23\GraphSdk\FileUpload\FacebookVideo;
+use One23\GraphSdk\FileUpload\File;
+use One23\GraphSdk\FileUpload\Video;
 use One23\GraphSdk\Http\RequestBodyMultipart;
 use One23\GraphSdk\Http\RequestBodyUrlEncoded;
 use One23\GraphSdk\Exceptions\SDKException;
@@ -233,7 +233,7 @@ class FacebookRequest
     public function sanitizeFileParams(array $params)
     {
         foreach ($params as $key => $value) {
-            if ($value instanceof FacebookFile) {
+            if ($value instanceof File) {
                 $this->addFile($key, $value);
                 unset($params[$key]);
             }
@@ -244,11 +244,8 @@ class FacebookRequest
 
     /**
      * Add a file to be uploaded.
-     *
-     * @param string       $key
-     * @param FacebookFile $file
      */
-    public function addFile($key, FacebookFile $file)
+    public function addFile(string $key, File $file)
     {
         $this->files[$key] = $file;
     }
@@ -273,23 +270,19 @@ class FacebookRequest
 
     /**
      * Let's us know if there is a file upload with this request.
-     *
-     * @return boolean
      */
-    public function containsFileUploads()
+    public function containsFileUploads(): bool
     {
         return !empty($this->files);
     }
 
     /**
      * Let's us know if there is a video upload with this request.
-     *
-     * @return boolean
      */
-    public function containsVideoUploads()
+    public function containsVideoUploads(): bool
     {
         foreach ($this->files as $file) {
-            if ($file instanceof FacebookVideo) {
+            if ($file instanceof Video) {
                 return true;
             }
         }
@@ -299,10 +292,8 @@ class FacebookRequest
 
     /**
      * Returns the body of the request as multipart/form-data.
-     *
-     * @return RequestBodyMultipart
      */
-    public function getMultipartBody()
+    public function getMultipartBody(): RequestBodyMultipart
     {
         $params = $this->getPostParams();
 
@@ -363,8 +354,6 @@ class FacebookRequest
 
     /**
      * Set the params for this request.
-     *
-     * @param array $params
      *
      * @return FacebookRequest
      *

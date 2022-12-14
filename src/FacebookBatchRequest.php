@@ -24,15 +24,12 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
      */
     protected $attachedFiles;
 
-    /**
-     * Creates a new Request entity.
-     *
-     * @param FacebookApp|null        $app
-     * @param array                   $requests
-     * @param AccessToken|string|null $accessToken
-     * @param string|null             $graphVersion
-     */
-    public function __construct(FacebookApp $app = null, array $requests = [], $accessToken = null, $graphVersion = null)
+    public function __construct(
+        FacebookApp $app = null,
+        array $requests = [],
+        AccessToken|string $accessToken = null,
+        string $graphVersion = null
+    )
     {
         parent::__construct($app, $accessToken, 'POST', '', [], null, $graphVersion);
 

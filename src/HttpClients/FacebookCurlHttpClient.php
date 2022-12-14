@@ -31,9 +31,6 @@ class FacebookCurlHttpClient implements FacebookHttpClientInterface
      */
     protected $facebookCurl;
 
-    /**
-     * @param FacebookCurl|null Procedural curl as object
-     */
     public function __construct(FacebookCurl $facebookCurl = null)
     {
         $this->facebookCurl = $facebookCurl ?: new FacebookCurl();

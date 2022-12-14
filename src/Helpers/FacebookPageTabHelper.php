@@ -16,15 +16,11 @@ class FacebookPageTabHelper extends FacebookCanvasHelper
      */
     protected $pageData;
 
-    /**
-     * Initialize the helper and process available signed request data.
-     *
-     * @param FacebookApp    $app          The FacebookApp entity.
-     * @param FacebookClient $client       The client to make HTTP requests.
-     * @param string|null    $graphVersion The version of Graph to use.
-     */
-    public function __construct(FacebookApp $app, FacebookClient $client, $graphVersion = null)
-    {
+    public function __construct(
+        FacebookApp $app,
+        FacebookClient $client,
+        string $graphVersion = null
+    ) {
         parent::__construct($app, $client, $graphVersion);
 
         if (!$this->signedRequest) {

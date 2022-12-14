@@ -5,10 +5,10 @@ namespace One23\GraphSdk;
 use InvalidArgumentException;
 use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Authentication\OAuth2Client;
-use One23\GraphSdk\FileUpload\FacebookFile;
-use One23\GraphSdk\FileUpload\FacebookResumableUploader;
-use One23\GraphSdk\FileUpload\FacebookTransferChunk;
-use One23\GraphSdk\FileUpload\FacebookVideo;
+use One23\GraphSdk\FileUpload\File;
+use One23\GraphSdk\FileUpload\ResumableUploader;
+use One23\GraphSdk\FileUpload\TransferChunk;
+use One23\GraphSdk\FileUpload\Video;
 use One23\GraphSdk\GraphNodes\GraphEdge;
 use One23\GraphSdk\Url;
 use One23\GraphSdk\PseudoRandomString\GeneratorFactory;
@@ -74,11 +74,9 @@ class Facebook
     /**
      * Stores the last request made to Graph.
      */
-    protected Response|FacebookBatchResponse|null $lastResponse = null;
+    protected Response|BatchResponse|null $lastResponse = null;
 
     /**
-     * Instantiates a new Facebook super-class object.
-     *
      * @throws SDKException
      */
     public function __construct(array $config = [])
@@ -135,7 +133,7 @@ class Facebook
     /**
      * Returns the last response returned from Graph.
      */
-    public function getLastResponse(): Response|FacebookBatchResponse|null
+    public function getLastResponse(): Response|BatchResponse|null
     {
         return $this->lastResponse;
     }
@@ -418,7 +416,7 @@ class Facebook
         array $requests,
         AccessToken|string $accessToken = null,
         string $graphVersion = null
-    ): FacebookBatchResponse
+    ): BatchResponse
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
@@ -456,9 +454,9 @@ class Facebook
      *
      * @throws SDKException
      */
-    public function fileToUpload(string $pathToFile): FacebookFile
+    public function fileToUpload(string $pathToFile): File
     {
-        return new FacebookFile($pathToFile);
+        return new File($pathToFile);
     }
 
     /**
@@ -478,7 +476,7 @@ class Facebook
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
 
-        $uploader = new FacebookResumableUploader($this->app, $this->client, $accessToken, $graphVersion);
+        $uploader = new ResumableUploader($this->app, $this->client, $accessToken, $graphVersion);
         $endpoint = '/'.$target.'/videos';
         $file = $this->videoToUpload($pathToFile);
         $chunk = $uploader->start($endpoint, $file);
@@ -498,9 +496,9 @@ class Facebook
      *
      * @throws SDKException
      */
-    public function videoToUpload(string $pathToFile): FacebookVideo
+    public function videoToUpload(string $pathToFile): Video
     {
-        return new FacebookVideo($pathToFile);
+        return new Video($pathToFile);
     }
 
     /**
@@ -509,11 +507,11 @@ class Facebook
      * @throws SDKException
      */
     private function maxTriesTransfer(
-        FacebookResumableUploader $uploader,
+        ResumableUploader $uploader,
         string $endpoint,
-        FacebookTransferChunk $chunk,
+        TransferChunk $chunk,
         int $retryCountdown
-    ): FacebookTransferChunk
+    ): TransferChunk
     {
         $newChunk = $uploader->transfer($endpoint, $chunk, $retryCountdown < 1);
 

@@ -26,9 +26,6 @@ class Response
      */
     protected SDKException $thrownException;
 
-    /**
-     * Creates a new Response entity.
-     */
     public function __construct(protected FacebookRequest $request, protected ?string $body = null, protected ?int $httpStatusCode = null, protected array $headers = [])
     {
         $this->decodeBody();
