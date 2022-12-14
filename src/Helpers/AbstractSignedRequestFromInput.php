@@ -4,8 +4,8 @@ namespace One23\GraphSdk\Helpers;
 
 use One23\GraphSdk\Exceptions\SDKException;
 use One23\GraphSdk\Facebook;
-use One23\GraphSdk\FacebookApp;
-use One23\GraphSdk\FacebookClient;
+use One23\GraphSdk\App;
+use One23\GraphSdk\Client;
 use One23\GraphSdk\MapTypeTrait;
 use One23\GraphSdk\SignedRequest;
 use One23\GraphSdk\Authentication\AccessToken;
@@ -23,8 +23,8 @@ abstract class AbstractSignedRequestFromInput
      * @throws SDKException
      */
     public function __construct(
-        protected FacebookApp $app,
-        FacebookClient $client,
+        protected App $app,
+        Client $client,
         string $graphVersion = null
     ) {
         $graphVersion = $graphVersion ?: Facebook::DEFAULT_GRAPH_VERSION;

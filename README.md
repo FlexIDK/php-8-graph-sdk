@@ -31,7 +31,11 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
   - GraphNodes\Collection
     - getProperty() -> getField()
 - Rename && refactoring class:
-  - Facebook -> BatchResponse
+  - FacebookApp -> App
+  - FacebookBatchRequest -> BatchRequest
+  - FacebookBatchResponse -> BatchResponse
+  - FacebookClient -> Client
+  - FacebookRequest -> Request
   - FacebookResponse -> Response 
   - Exceptions\
     - FacebookAuthenticationException -> AuthenticationException
@@ -61,7 +65,11 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - FacebookUrlManipulator -> Url\Manipulator
     - UrlDetectionInterface -> Url\DetectionInterface
 - **Deprecate** (remove in next version):
+  - FacebookApp
+  - FacebookBatchRequest
   - FacebookBatchResponse
+  - FacebookClient
+  - FacebookRequest
   - FacebookResponse
   - Exceptions\
     - FacebookAuthenticationException

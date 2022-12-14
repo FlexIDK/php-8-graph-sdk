@@ -3,10 +3,10 @@
 namespace One23\GraphSdk\Authentication;
 
 use One23\GraphSdk\Facebook;
-use One23\GraphSdk\FacebookApp;
-use One23\GraphSdk\FacebookRequest;
+use One23\GraphSdk\App;
+use One23\GraphSdk\Request;
 use One23\GraphSdk\Response;
-use One23\GraphSdk\FacebookClient;
+use One23\GraphSdk\Client;
 use One23\GraphSdk\Exceptions\ResponseException;
 use One23\GraphSdk\Exceptions\SDKException;
 
@@ -25,18 +25,18 @@ class OAuth2Client
     /**
      * The last request sent to Graph.
      */
-    protected ?FacebookRequest $lastRequest = null;
+    protected ?Request $lastRequest = null;
 
-    public function __construct(protected FacebookApp $app, protected FacebookClient $client, string $graphVersion = null)
+    public function __construct(protected App $app, protected Client $client, string $graphVersion = null)
     {
         $this->graphVersion = $graphVersion ?: Facebook::DEFAULT_GRAPH_VERSION;
     }
 
     /**
-     * Returns the last FacebookRequest that was sent.
+     * Returns the last Request that was sent.
      * Useful for debugging and testing.
      */
-    public function getLastRequest(): ?FacebookRequest
+    public function getLastRequest(): ?Request
     {
         return $this->lastRequest;
     }
@@ -51,7 +51,7 @@ class OAuth2Client
         $accessToken = $accessToken instanceof AccessToken ? $accessToken->getValue() : $accessToken;
         $params = ['input_token' => $accessToken];
 
-        $this->lastRequest = new FacebookRequest(
+        $this->lastRequest = new Request(
             $this->app,
             $this->app->getAccessToken(),
             'GET',
@@ -160,7 +160,7 @@ class OAuth2Client
 
         $accessToken = $accessToken ?: $this->app->getAccessToken();
 
-        $this->lastRequest = new FacebookRequest(
+        $this->lastRequest = new Request(
             $this->app,
             $accessToken,
             'GET',

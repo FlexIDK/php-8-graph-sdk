@@ -12,13 +12,15 @@ class FacebookMemoryPersistentDataHandler implements PersistentDataInterface
      */
     protected array $sessionData = [];
 
-    public function get($key)
+    public function get(string $key): mixed
     {
         return $this->sessionData[$key] ?? null;
     }
 
-    public function set($key, $value)
+    public function set(string $key, mixed $value): static
     {
         $this->sessionData[$key] = $value;
+
+        return $this;
     }
 }

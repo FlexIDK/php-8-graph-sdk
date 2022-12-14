@@ -19,12 +19,14 @@ class AccessToken
     /**
      * Setter for expires_at.
      */
-    protected function setExpiresAtFromTimeStamp(int $timeStamp): void
+    protected function setExpiresAtFromTimeStamp(int $timeStamp): static
     {
         $dt = new \DateTime();
         $dt->setTimestamp($timeStamp);
 
         $this->expiresAt = $dt;
+
+        return $this;
     }
 
     /**

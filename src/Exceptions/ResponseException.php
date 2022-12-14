@@ -39,7 +39,7 @@ class ResponseException extends SDKException
     /**
      * A factory for creating the appropriate exception based on the response from Graph.
      */
-    public static function create(Response $response): self
+    public static function create(Response $response): static
     {
         $data = $response->getDecodedBody();
 

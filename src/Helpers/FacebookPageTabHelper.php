@@ -2,16 +2,16 @@
 
 namespace One23\GraphSdk\Helpers;
 
-use One23\GraphSdk\FacebookApp;
-use One23\GraphSdk\FacebookClient;
+use One23\GraphSdk\App;
+use One23\GraphSdk\Client;
 
 class FacebookPageTabHelper extends FacebookCanvasHelper
 {
     protected ?array $pageData = null;
 
     public function __construct(
-        FacebookApp $app,
-        FacebookClient $client,
+        App $app,
+        Client $client,
         string $graphVersion = null
     ) {
         parent::__construct($app, $client, $graphVersion);

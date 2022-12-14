@@ -28,18 +28,21 @@ class GraphRawResponse
         }
     }
 
-    protected function setHttpResponseCode(int $code) {
+    protected function setHttpResponseCode(int $code): static
+    {
         if ($code < 0) {
             throw new \InvalidArgumentException("'httpStatusCode' expects a value greater than 0");
         }
 
         $this->httpResponseCode = $code;
+
+        return $this;
     }
 
     /**
      * Parse the raw headers and set as an array.
      */
-    protected function setHeadersFromString(string $rawHeaders): void
+    protected function setHeadersFromString(string $rawHeaders): static
     {
         // Normalize line breaks
         $rawHeaders = str_replace("\r\n", "\n", $rawHeaders);
@@ -60,17 +63,21 @@ class GraphRawResponse
                 $this->headers[$key] = $value;
             }
         }
+
+        return $this;
     }
 
     /**
      * Sets the HTTP response code from a raw header.
      */
-    public function setHttpResponseCodeFromHeader(string $rawResponseHeader): void
+    public function setHttpResponseCodeFromHeader(string $rawResponseHeader): static
     {
         // https://tools.ietf.org/html/rfc7230#section-3.1.2
         list($version, $status, $reason) = array_pad(explode(' ', $rawResponseHeader, 3), 3, null);
 
         $this->setHttpResponseCode((int)$status);
+
+        return $this;
     }
 
     /**

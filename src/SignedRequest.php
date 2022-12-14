@@ -17,7 +17,7 @@ class SignedRequest
      * @throws SDKException
      */
     public function __construct(
-        protected FacebookApp $app,
+        protected App $app,
         protected ?string $rawSignedRequest = null
     ) {
         $this->parse();

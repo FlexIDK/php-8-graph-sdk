@@ -32,14 +32,14 @@ class Facebook
     const APP_GRAPH_VERSION = 'FACEBOOK_APP_GRAPH_VERSION';
 
     /**
-     * The FacebookApp entity.
+     * The App entity.
      */
-    protected FacebookApp $app;
+    protected App $app;
 
     /**
      * @The Facebook client service.
      */
-    protected FacebookClient $client;
+    protected Client $client;
 
     /**
      * The OAuth 2.0 client service.
@@ -102,8 +102,8 @@ class Facebook
             throw new SDKException('Required "default_graph_version" key not supplied in config and could not find fallback environment variable "' . static::APP_GRAPH_VERSION . '"');
         }
 
-        $this->app = new FacebookApp($config['app_id'], $config['app_secret']);
-        $this->client = new FacebookClient(
+        $this->app = new App($config['app_id'], $config['app_secret']);
+        $this->client = new Client(
             HttpClientsFactory::createHttpClient($config['http_client_handler']),
             $config['enable_beta_mode']
         );
@@ -125,9 +125,11 @@ class Facebook
     /**
      * Changes the URL detection handler.
      */
-    private function setUrlDetectionHandler(Url\DetectionInterface $urlDetectionHandler): void
+    private function setUrlDetectionHandler(Url\DetectionInterface $urlDetectionHandler): static
     {
         $this->urlDetectionHandler = $urlDetectionHandler;
+
+        return $this;
     }
 
     /**
@@ -159,18 +161,18 @@ class Facebook
      *
      * @throws InvalidArgumentException
      */
-    public function setDefaultAccessToken(AccessToken|string $accessToken): void
+    public function setDefaultAccessToken(AccessToken|string $accessToken): static
     {
         if (is_string($accessToken)) {
             $this->defaultAccessToken = new AccessToken($accessToken);
 
-            return;
+            return $this;
         }
 
         if ($accessToken instanceof AccessToken) {
             $this->defaultAccessToken = $accessToken;
 
-            return;
+            return $this;
         }
 
         throw new InvalidArgumentException('The default access token must be of type "string" or Facebook\AccessToken');
@@ -212,17 +214,17 @@ class Facebook
     }
 
     /**
-     * Returns the FacebookApp entity.
+     * Returns the App entity.
      */
-    public function getApp(): FacebookApp
+    public function getApp(): App
     {
         return $this->app;
     }
 
     /**
-     * Returns the FacebookClient service.
+     * Returns the Client service.
      */
-    public function getClient(): FacebookClient
+    public function getClient(): Client
     {
         return $this->client;
     }
@@ -295,7 +297,7 @@ class Facebook
     }
 
     /**
-     * Instantiates a new FacebookRequest entity.
+     * Instantiates a new Request entity.
      */
     public function request(
         string $method,
@@ -304,12 +306,12 @@ class Facebook
         AccessToken|string $accessToken = null,
         string $eTag = null,
         string $graphVersion = null
-    ): FacebookRequest
+    ): Request
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
 
-        return new FacebookRequest(
+        return new Request(
             $this->app,
             $accessToken,
             $method,
@@ -420,7 +422,7 @@ class Facebook
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
-        $batchRequest = new FacebookBatchRequest(
+        $batchRequest = new BatchRequest(
             $this->app,
             $requests,
             $accessToken,
@@ -431,17 +433,17 @@ class Facebook
     }
 
     /**
-     * Instantiates an empty FacebookBatchRequest entity.
+     * Instantiates an empty BatchRequest entity.
      */
     public function newBatchRequest(
         AccessToken|string $accessToken = null,
         string $graphVersion = null
-    ): FacebookBatchRequest
+    ): BatchRequest
     {
         $accessToken = $accessToken ?: $this->defaultAccessToken;
         $graphVersion = $graphVersion ?: $this->defaultGraphVersion;
 
-        return new FacebookBatchRequest(
+        return new BatchRequest(
             $this->app,
             [],
             $accessToken,

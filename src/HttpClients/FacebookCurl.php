@@ -30,9 +30,11 @@ class FacebookCurl
      * @param $key
      * @param $value
      */
-    public function setopt($key, $value)
+    public function setopt($key, $value): static
     {
         curl_setopt($this->curl, $key, $value);
+
+        return $this;
     }
 
     /**
@@ -40,9 +42,11 @@ class FacebookCurl
      *
      * @param array $options
      */
-    public function setoptArray(array $options)
+    public function setoptArray(array $options): static
     {
         curl_setopt_array($this->curl, $options);
+
+        return $this;
     }
 
     /**

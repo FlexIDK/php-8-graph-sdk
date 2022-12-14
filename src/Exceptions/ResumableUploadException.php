@@ -13,7 +13,7 @@ class ResumableUploadException extends SDKException
         return $this->startOffset;
     }
 
-    public function setStartOffset(?int $startOffset): self
+    public function setStartOffset(?int $startOffset): static
     {
         $this->startOffset = $startOffset;
 
@@ -25,7 +25,7 @@ class ResumableUploadException extends SDKException
         return $this->endOffset;
     }
 
-    public function setEndOffset(?int $endOffset): self
+    public function setEndOffset(?int $endOffset): static
     {
         $this->endOffset = $endOffset;
 

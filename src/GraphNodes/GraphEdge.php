@@ -2,7 +2,7 @@
 
 namespace One23\GraphSdk\GraphNodes;
 
-use One23\GraphSdk\FacebookRequest;
+use One23\GraphSdk\Request;
 use One23\GraphSdk\Url;
 use One23\GraphSdk\Exceptions\SDKException;
 
@@ -13,7 +13,7 @@ use One23\GraphSdk\Exceptions\SDKException;
 class GraphEdge extends Collection
 {
     public function __construct(
-        protected FacebookRequest $request,
+        protected Request $request,
         array $data = [],
         protected array $metaData = [],
         protected ?string $parentEdgeEndpoint = null,
@@ -82,7 +82,7 @@ class GraphEdge extends Collection
      *
      * @throws SDKException
      */
-    public function getNextPageRequest(): ?FacebookRequest
+    public function getNextPageRequest(): ?Request
     {
         return $this->getPaginationRequest('next');
     }
@@ -92,7 +92,7 @@ class GraphEdge extends Collection
      *
      * @param string $direction The direction of the page: next|previous
      *
-     * @return FacebookRequest|null
+     * @return Request|null
      *
      * @throws SDKException
      */
@@ -152,7 +152,7 @@ class GraphEdge extends Collection
      *
      * @throws SDKException
      */
-    public function getPreviousPageRequest(): ?FacebookRequest
+    public function getPreviousPageRequest(): ?Request
     {
         return $this->getPaginationRequest('previous');
     }

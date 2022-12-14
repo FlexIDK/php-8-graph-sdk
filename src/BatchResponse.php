@@ -14,7 +14,7 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
     protected array $responses = [];
 
     public function __construct(
-        protected FacebookBatchRequest $batchRequest,
+        protected BatchRequest $batchRequest,
         Response $response
     ) {
         $request = $response->getRequest();
@@ -39,16 +39,18 @@ class BatchResponse extends Response implements IteratorAggregate, ArrayAccess
      * The main batch response will be an array of requests so
      * we need to iterate over all the responses.
      */
-    public function setResponses(array $responses): void
+    public function setResponses(array $responses): static
     {
         $this->responses = [];
 
         foreach ($responses as $key => $graphResponse) {
             $this->addResponse($key, $graphResponse);
         }
+
+        return $this;
     }
 
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->responses);
     }

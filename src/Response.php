@@ -26,7 +26,7 @@ class Response
      */
     protected SDKException $thrownException;
 
-    public function __construct(protected FacebookRequest $request, protected ?string $body = null, protected ?int $httpStatusCode = null, protected array $headers = [])
+    public function __construct(protected Request $request, protected ?string $body = null, protected ?int $httpStatusCode = null, protected array $headers = [])
     {
         $this->decodeBody();
     }
@@ -93,15 +93,15 @@ class Response
     /**
      * Return the original request that returned this response.
      */
-    public function getRequest(): FacebookRequest
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
     /**
-     * Return the FacebookApp entity used for this response.
+     * Return the App entity used for this response.
      */
-    public function getApp(): FacebookApp
+    public function getApp(): App
     {
         return $this->request->getApp();
     }

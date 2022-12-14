@@ -28,16 +28,15 @@ class FacebookSessionPersistentDataHandler implements PersistentDataInterface
         }
     }
 
-    public function get($key)
+    public function get(string $key): mixed
     {
         return isset($_SESSION[$this->sessionPrefix . $key]) ?? null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function set($key, $value)
+    public function set(string $key, mixed $value): static
     {
         $_SESSION[$this->sessionPrefix . $key] = $value;
+
+        return $this;
     }
 }

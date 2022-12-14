@@ -5,15 +5,15 @@ namespace One23\GraphSdk\FileUpload;
 use One23\GraphSdk\Exceptions\ResponseException;
 use One23\GraphSdk\Exceptions\ResumableUploadException;
 use One23\GraphSdk\Exceptions\SDKException;
-use One23\GraphSdk\FacebookApp;
-use One23\GraphSdk\FacebookClient;
-use One23\GraphSdk\FacebookRequest;
+use One23\GraphSdk\App;
+use One23\GraphSdk\Client;
+use One23\GraphSdk\Request;
 
 class ResumableUploader
 {
     public function __construct(
-        protected FacebookApp $app,
-        protected FacebookClient $client,
+        protected App $app,
+        protected Client $client,
         protected $accessToken,
         protected $graphVersion
     ) {
@@ -36,13 +36,13 @@ class ResumableUploader
     }
 
     /**
-     * Helper to make a FacebookRequest and send it.
+     * Helper to make a Request and send it.
      *
      * @throws SDKException
      */
     private function sendUploadRequest(string $endpoint, array $params = []): array
     {
-        $request = new FacebookRequest($this->app, $this->accessToken, 'POST', $endpoint, $params, null, $this->graphVersion);
+        $request = new Request($this->app, $this->accessToken, 'POST', $endpoint, $params, null, $this->graphVersion);
 
         return $this->client->sendRequest($request)->getDecodedBody();
     }
