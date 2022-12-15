@@ -6,10 +6,10 @@ use One23\GraphSdk\Exceptions\SDKException;
 use One23\GraphSdk\Facebook;
 use One23\GraphSdk\App;
 use One23\GraphSdk\Client;
-use One23\GraphSdk\MapTypeTrait;
 use One23\GraphSdk\SignedRequest;
 use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Authentication\OAuth2Client;
+use One23\GraphSdk\Traits\MapTypeTrait;
 
 abstract class AbstractSignedRequestFromInput
 {

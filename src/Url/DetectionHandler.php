@@ -2,7 +2,7 @@
 
 namespace One23\GraphSdk\Url;
 
-use One23\GraphSdk\MapTypeTrait;
+use One23\GraphSdk\Traits\MapTypeTrait;
 
 class DetectionHandler implements DetectionInterface
 {

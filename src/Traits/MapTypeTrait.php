@@ -1,6 +1,6 @@
 <?php
 
-namespace One23\GraphSdk;
+namespace One23\GraphSdk\Traits;
 
 trait MapTypeTrait {
 

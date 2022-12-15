@@ -17,7 +17,7 @@ class SessionLaravel implements PersistentDataInterface
      */
     public function __construct(bool $enableSessionCheck = true)
     {
-        if ($enableSessionCheck && Session::start()) {
+        if ($enableSessionCheck && !Session::start()) {
             throw new SDKException(
                 'Laravel sessions are not active.',
                 720

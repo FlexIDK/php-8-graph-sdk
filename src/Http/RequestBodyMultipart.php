@@ -50,7 +50,7 @@ class RequestBodyMultipart implements RequestBodyInterface
      */
     private function getNestedParams(array $params): array
     {
-        $query = http_build_query($params, null, '&');
+        $query = http_build_query($params, "", '&');
         $params = explode('&', $query);
         $result = [];
 

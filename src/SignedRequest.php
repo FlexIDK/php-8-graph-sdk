@@ -3,6 +3,7 @@
 namespace One23\GraphSdk;
 
 use One23\GraphSdk\Exceptions\SDKException;
+use One23\GraphSdk\Traits\MapTypeTrait;
 
 class SignedRequest
 {

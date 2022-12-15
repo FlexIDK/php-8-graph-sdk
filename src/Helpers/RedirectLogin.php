@@ -5,11 +5,11 @@ namespace One23\GraphSdk\Helpers;
 use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Authentication\OAuth2Client;
 use One23\GraphSdk\Exceptions\SDKException;
-use One23\GraphSdk\MapTypeTrait;
 use One23\GraphSdk\PersistentData\PersistentDataFactory;
 use One23\GraphSdk\PersistentData\Handlers\PersistentDataInterface;
 use One23\GraphSdk\PseudoRandomString\GeneratorFactory;
 use One23\GraphSdk\PseudoRandomString\Generators\GeneratorInterface;
+use One23\GraphSdk\Traits\MapTypeTrait;
 use One23\GraphSdk\Url;
 
 class RedirectLogin
@@ -105,7 +105,8 @@ class RedirectLogin
             'access_token' => $accessToken->getValue(),
         ];
 
-        return 'https://www.facebook.com/logout.php?' . http_build_query($params, null, $separator);
+        return 'https://www.facebook.com/logout.php?' .
+            http_build_query($params, "", $separator);
     }
 
     /**

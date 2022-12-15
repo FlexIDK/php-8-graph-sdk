@@ -3,7 +3,7 @@
 namespace One23\GraphSdk\Authentication;
 
 use One23\GraphSdk\Exceptions\SDKException;
-use One23\GraphSdk\MapTypeTrait;
+use One23\GraphSdk\Traits\MapTypeTrait;
 
 /**
  * Represents metadata from an access token.

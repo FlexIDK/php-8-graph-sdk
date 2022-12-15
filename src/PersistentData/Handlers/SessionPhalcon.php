@@ -30,7 +30,7 @@ class SessionPhalcon implements PersistentDataInterface
 
         $this->session = $session;
 
-        if ($enableSessionCheck && $this->session->start()) {
+        if ($enableSessionCheck && !$this->session->start()) {
             throw new SDKException(
                 'Phalcon sessions are not active.',
                 720

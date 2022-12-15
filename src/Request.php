@@ -81,9 +81,9 @@ class Request
     /**
      * Sets the eTag value.
      */
-    public function setETag(string $eTag): static
+    public function setETag(string $eTag = null): static
     {
-        $this->eTag = $eTag;
+        $this->eTag = $eTag ?: "";
 
         return $this;
     }
@@ -303,9 +303,9 @@ class Request
     /**
      * Set the HTTP method for this request.
      */
-    public function setMethod(string $method): static
+    public function setMethod(string $method = null): static
     {
-        $this->method = strtoupper($method);
+        $this->method = $method ? strtoupper($method) : 'GET';
 
         return $this;
     }
@@ -430,7 +430,7 @@ class Request
     public function getEndpoint(): string
     {
         // For batch requests, this will be empty
-        return $this->endpoint;
+        return $this->endpoint ?: "";
     }
 
     /**
@@ -438,8 +438,12 @@ class Request
      *
      * @throws SDKException
      */
-    public function setEndpoint(string $endpoint): static
+    public function setEndpoint(string $endpoint = null): static
     {
+        if (!$endpoint) {
+            return $this;
+        }
+
         // Harvest the access token from the endpoint to keep things in sync
         $params = Url\Manipulator::getParamsAsArray($endpoint);
         if (isset($params['access_token'])) {

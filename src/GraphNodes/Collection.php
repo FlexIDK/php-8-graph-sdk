@@ -6,7 +6,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use One23\GraphSdk\MapTypeTrait;
+use One23\GraphSdk\Traits\MapTypeTrait;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {

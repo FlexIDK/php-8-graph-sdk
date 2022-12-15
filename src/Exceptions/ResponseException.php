@@ -2,8 +2,8 @@
 
 namespace One23\GraphSdk\Exceptions;
 
-use One23\GraphSdk\MapTypeTrait;
 use One23\GraphSdk\Response;
+use One23\GraphSdk\Traits\MapTypeTrait;
 
 class ResponseException extends SDKException
 {
