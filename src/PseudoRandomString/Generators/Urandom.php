@@ -4,7 +4,7 @@ namespace One23\GraphSdk\PseudoRandomString\Generators;
 
 use One23\GraphSdk\Exceptions\SDKException;
 
-class UrandomGenerator implements GeneratorInterface
+class Urandom implements GeneratorInterface
 {
 
     use GeneratorTrait;

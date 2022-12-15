@@ -53,12 +53,23 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - FacebookTransferChunk -> TransferChunk
     - FacebookVideo -> Video
   - Helpers\
-    - FacebookSignedRequestFromInputHelper -> AbstractSignedRequestFromInput 
+    - FacebookSignedRequestFromInputHelper -> AbstractSignedRequestFromInput
+  - HttpClients\
+    - FacebookCurl -> Curl
+    - FacebookStream - Stream
+    - FacebookHttpClientInterface -> Clients\ClientInterface
+    - FacebookCurlHttpClient -> Clients\Curl
+    - FacebookGuzzleHttpClient -> Clients\Guzzle
+    - FacebookStreamHttpClient -> Clients\Stream
+  - PersistentData\
+    - PersistentDataInterface -> Handlers\PersistentDataInterface
+    - FacebookMemoryPersistentDataHandler -> Handlers\Memory
+    - FacebookSessionPersistentDataHandler -> Handlers\Session
   - PseudoRandomString\
-    - McryptPseudoRandomStringGenerator -> Generators\McryptGenerator (deprecate)
-    - OpenSslPseudoRandomStringGenerator -> Generators\OpenSslGenerator
-    - RandomBytesPseudoRandomStringGenerator -> Generators\RandomBytesGenerator
-    - UrandomPseudoRandomStringGenerator -> Generators\UrandomGenerator
+    - McryptPseudoRandomStringGenerator -> Generators\Mcrypt (deprecate)
+    - OpenSslPseudoRandomStringGenerator -> Generators\OpenSsl
+    - RandomBytesPseudoRandomStringGenerator -> Generators\RandomBytes
+    - UrandomPseudoRandomStringGenerator -> Generators\Urandom
     - PseudoRandomStringGeneratorInterface -> Generators\GeneratorInterface
     - PseudoRandomStringGeneratorFactory -> GeneratorFactory
   - Url\
@@ -87,7 +98,18 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - FacebookTransferChunk
     - FacebookVideo
   - Helpers\
-    - FacebookSignedRequestFromInputHelper 
+    - FacebookSignedRequestFromInputHelper
+  - HttpClients\
+    - FacebookCurl
+    - FacebookCurlHttpClient
+    - FacebookGuzzleHttpClient
+    - FacebookHttpClientInterface
+    - FacebookStream
+    - FacebookStreamHttpClient
+  - PersistentData\
+    - PersistentDataInterface
+    - FacebookMemoryPersistentDataHandler
+    - FacebookSessionPersistentDataHandler
   - PseudoRandomString\
     - McryptPseudoRandomStringGenerator
     - OpenSslPseudoRandomStringGenerator
@@ -95,13 +117,16 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
     - PseudoRandomStringGeneratorInterface
     - RandomBytesPseudoRandomStringGenerator
     - UrandomPseudoRandomStringGenerator
-    - **Generators\McryptGenerator** 
+    - **Generators\Mcrypt** 
 
 ## What's new
 
+- Support PHP 8.1
+- Fix guzzle request
 - Global exception: \One23\GraphSdk\Exception
 - FileUpload\Mimetypes - replace to \GuzzleHttp\Psr7\MimeType
-- ...
+- PersistentData\Handlers\SessionLaravel
+- PersistentData\Handlers\SessionPhalcon
   
 ## Usage
 
@@ -125,11 +150,11 @@ try {
   // Get the \Facebook\GraphNodes\GraphUser object for the current user.
   // If you provided a 'default_access_token', the '{access-token}' is optional.
   $response = $fb->get('/me', '{access-token}');
-} catch(\Facebook\Exceptions\FacebookResponseException $e) {
+} catch(\Facebook\Exceptions\ResponseException $e) {
   // When Graph returns an error
   echo 'Graph returned an error: ' . $e->getMessage();
   exit;
-} catch(\Facebook\Exceptions\FacebookSDKException $e) {
+} catch(\Facebook\Exceptions\SDKException $e) {
   // When validation fails or other local issues
   echo 'Facebook SDK returned an error: ' . $e->getMessage();
   exit;

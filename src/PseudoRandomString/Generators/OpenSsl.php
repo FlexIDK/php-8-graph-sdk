@@ -4,7 +4,7 @@ namespace One23\GraphSdk\PseudoRandomString\Generators;
 
 use One23\GraphSdk\Exceptions\SDKException;
 
-class OpenSslGenerator implements GeneratorInterface
+class OpenSsl implements GeneratorInterface
 {
     use GeneratorTrait;
 

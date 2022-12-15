@@ -10,38 +10,33 @@ class HttpClientsFactory
 {
     private function __construct()
     {
-        // a factory constructor should never be invoked
     }
 
     /**
      * HTTP client generation.
      *
-     * @param FacebookHttpClientInterface|Client|string|null $handler
-     *
-     * @throws Exception                If the cURL extension or the Guzzle client aren't available (if required).
-     * @throws InvalidArgumentException If the http client handler isn't "curl", "stream", "guzzle", or an instance of One23\GraphSdk\HttpClients\FacebookHttpClientInterface.
-     *
-     * @return FacebookHttpClientInterface
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
-    public static function createHttpClient($handler)
+    public static function createHttpClient(Clients\Guzzle|Client|string $handler = null): Clients\ClientInterface
     {
         if (!$handler) {
             return self::detectDefaultClient();
         }
 
-        if ($handler instanceof FacebookHttpClientInterface) {
+        if ($handler instanceof Clients\ClientInterface) {
             return $handler;
         }
 
         if ('stream' === $handler) {
-            return new FacebookStreamHttpClient();
+            return new Clients\Stream();
         }
         if ('curl' === $handler) {
             if (!extension_loaded('curl')) {
                 throw new Exception('The cURL extension must be loaded in order to use the "curl" handler.');
             }
 
-            return new FacebookCurlHttpClient();
+            return new Clients\Curl();
         }
 
         if ('guzzle' === $handler && !class_exists('GuzzleHttp\Client')) {
@@ -49,30 +44,31 @@ class HttpClientsFactory
         }
 
         if ($handler instanceof Client) {
-            return new FacebookGuzzleHttpClient($handler);
+            return new Clients\Guzzle($handler);
         }
         if ('guzzle' === $handler) {
-            return new FacebookGuzzleHttpClient();
+            return new Clients\Guzzle();
         }
 
-        throw new InvalidArgumentException('The http client handler must be set to "curl", "stream", "guzzle", be an instance of GuzzleHttp\Client or an instance of One23\GraphSdk\HttpClients\FacebookHttpClientInterface');
+        throw new InvalidArgumentException(
+            'The http client handler must be set to "curl", "stream", "guzzle",' .
+            ' be an instance of ' . Client::class .
+            ' or an instance of ' . Clients\ClientInterface::class);
     }
 
     /**
      * Detect default HTTP client.
-     *
-     * @return FacebookHttpClientInterface
      */
-    private static function detectDefaultClient()
+    private static function detectDefaultClient(): Clients\ClientInterface
     {
         if (extension_loaded('curl')) {
-            return new FacebookCurlHttpClient();
+            return new Clients\Curl();
         }
 
         if (class_exists('GuzzleHttp\Client')) {
-            return new FacebookGuzzleHttpClient();
+            return new Clients\Guzzle();
         }
 
-        return new FacebookStreamHttpClient();
+        return new Clients\Stream();
     }
 }

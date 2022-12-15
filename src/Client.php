@@ -2,9 +2,9 @@
 
 namespace One23\GraphSdk;
 
-use One23\GraphSdk\HttpClients\FacebookHttpClientInterface;
-use One23\GraphSdk\HttpClients\FacebookCurlHttpClient;
-use One23\GraphSdk\HttpClients\FacebookStreamHttpClient;
+use One23\GraphSdk\HttpClients\Clients\ClientInterface;
+use One23\GraphSdk\HttpClients\Clients\Curl;
+use One23\GraphSdk\HttpClients\Clients\Stream;
 use One23\GraphSdk\Exceptions\SDKException;
 
 class Client
@@ -52,10 +52,10 @@ class Client
     /**
      * HTTP client handler.
      */
-    protected FacebookHttpClientInterface $httpClientHandler;
+    protected ClientInterface $httpClientHandler;
 
     public function __construct(
-        FacebookHttpClientInterface $httpClientHandler = null,
+        ClientInterface $httpClientHandler = null,
         protected bool $enableBetaMode = false
     ) {
         $this->httpClientHandler = $httpClientHandler ?: $this->detectHttpClientHandler();
@@ -64,17 +64,17 @@ class Client
     /**
      * Detects which HTTP client handler to use.
      */
-    public function detectHttpClientHandler(): FacebookHttpClientInterface
+    public function detectHttpClientHandler(): ClientInterface
     {
         return extension_loaded('curl')
-            ? new FacebookCurlHttpClient()
-            : new FacebookStreamHttpClient();
+            ? new Curl()
+            : new Stream();
     }
 
     /**
      * Returns the HTTP client handler.
      */
-    public function getHttpClientHandler(): FacebookHttpClientInterface
+    public function getHttpClientHandler(): ClientInterface
     {
         return $this->httpClientHandler;
     }
@@ -82,7 +82,7 @@ class Client
     /**
      * Sets the HTTP client handler.
      */
-    public function setHttpClientHandler(FacebookHttpClientInterface $httpClientHandler): static
+    public function setHttpClientHandler(ClientInterface $httpClientHandler): static
     {
         $this->httpClientHandler = $httpClientHandler;
 

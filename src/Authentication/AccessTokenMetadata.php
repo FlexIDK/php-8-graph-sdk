@@ -131,7 +131,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getErrorProperty('message'),
-            'string'
+            'str'
         );
     }
 
@@ -181,7 +181,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getField('metadata'),
-            'array'
+            'arr'
         );
     }
 
@@ -192,7 +192,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getMetadataProperty('sso'),
-            'string'
+            'str'
         );
     }
 
@@ -211,7 +211,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getMetadataProperty('auth_type'),
-            'string'
+            'str'
         );
     }
 
@@ -222,7 +222,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getMetadataProperty('auth_nonce'),
-            'string'
+            'str'
         );
     }
 
@@ -234,7 +234,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getField('profile_id'),
-            'string'
+            'str'
         );
     }
 
@@ -246,7 +246,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getField('scopes'),
-            'array'
+            'arr'
         );
     }
 
@@ -270,7 +270,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getField('app_id'),
-            'string'
+            'str'
         );
     }
 
@@ -294,7 +294,7 @@ class AccessTokenMetadata
     {
         return self::mapType(
             $this->getField('user_id'),
-            'string'
+            'str'
         );
     }
 

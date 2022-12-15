@@ -3,6 +3,6 @@
 namespace One23\GraphSdk\PseudoRandomString;
 
 /** @deprecated  */
-class OpenSslPseudoRandomStringGenerator extends Generators\OpenSslGenerator
+class OpenSslPseudoRandomStringGenerator extends Generators\OpenSsl
 {
 }

@@ -27,10 +27,10 @@ class GeneratorFactory
         }
 
         return match ($generator) {
-            'random_bytes' => new Generators\RandomBytesGenerator(),
-            'mcrypt' => new Generators\McryptGenerator(),
-            'openssl' => new Generators\OpenSslGenerator(),
-            'urandom' => new Generators\UrandomGenerator(),
+            'random_bytes' => new Generators\RandomBytes(),
+            'mcrypt' => new Generators\Mcrypt(),
+            'openssl' => new Generators\OpenSsl(),
+            'urandom' => new Generators\Urandom(),
             default => throw new InvalidArgumentException('The pseudo random string generator must be set to "random_bytes", "mcrypt", "openssl", or "urandom", or be an instance of ' . Generators\GeneratorInterface::class),
         };
     }
@@ -44,15 +44,15 @@ class GeneratorFactory
     {
         // Check for PHP 7's CSPRNG first to keep mcrypt deprecation messages from appearing in PHP 7.1.
         if (function_exists('random_bytes')) {
-            return new Generators\RandomBytesGenerator();
+            return new Generators\RandomBytes();
         }
 
         if (function_exists('openssl_random_pseudo_bytes')) {
-            return new Generators\OpenSslGenerator();
+            return new Generators\OpenSsl();
         }
 
         if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
-            return new Generators\UrandomGenerator();
+            return new Generators\Urandom();
         }
 
         throw new SDKException('Unable to detect a cryptographically secure pseudo-random string generator.');

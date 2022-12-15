@@ -4,7 +4,7 @@ namespace One23\GraphSdk\PseudoRandomString\Generators;
 
 use One23\GraphSdk\Exceptions\SDKException;
 
-class RandomBytesGenerator implements GeneratorInterface
+class RandomBytes implements GeneratorInterface
 {
     use GeneratorTrait;
 

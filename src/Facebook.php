@@ -15,11 +15,11 @@ use One23\GraphSdk\PseudoRandomString\GeneratorFactory;
 use One23\GraphSdk\PseudoRandomString\Generators\GeneratorInterface;
 use One23\GraphSdk\HttpClients\HttpClientsFactory;
 use One23\GraphSdk\PersistentData\PersistentDataFactory;
-use One23\GraphSdk\PersistentData\PersistentDataInterface;
-use One23\GraphSdk\Helpers\FacebookCanvasHelper;
-use One23\GraphSdk\Helpers\FacebookJavaScriptHelper;
-use One23\GraphSdk\Helpers\FacebookPageTabHelper;
-use One23\GraphSdk\Helpers\FacebookRedirectLoginHelper;
+use One23\GraphSdk\PersistentData\Handlers\PersistentDataInterface;
+use One23\GraphSdk\Helpers\Canvas;
+use One23\GraphSdk\Helpers\JavaScript;
+use One23\GraphSdk\Helpers\PageTab;
+use One23\GraphSdk\Helpers\RedirectLogin;
 use One23\GraphSdk\Exceptions\SDKException;
 
 class Facebook
@@ -189,9 +189,9 @@ class Facebook
     /**
      * Returns the redirect login helper.
      */
-    public function getRedirectLoginHelper(): FacebookRedirectLoginHelper
+    public function getRedirectLoginHelper(): RedirectLogin
     {
-        return new FacebookRedirectLoginHelper(
+        return new RedirectLogin(
             $this->getOAuth2Client(),
             $this->persistentDataHandler,
             $this->urlDetectionHandler,
@@ -231,26 +231,32 @@ class Facebook
 
     /**
      * Returns the JavaScript helper.
+     *
+     * @throws SDKException
      */
-    public function getJavaScriptHelper(): FacebookJavaScriptHelper
+    public function getJavaScriptHelper(): JavaScript
     {
-        return new FacebookJavaScriptHelper($this->app, $this->client, $this->defaultGraphVersion);
+        return new JavaScript($this->app, $this->client, $this->defaultGraphVersion);
     }
 
     /**
      * Returns the canvas helper.
+     *
+     * @throws SDKException
      */
-    public function getCanvasHelper(): FacebookCanvasHelper
+    public function getCanvasHelper(): Canvas
     {
-        return new FacebookCanvasHelper($this->app, $this->client, $this->defaultGraphVersion);
+        return new Canvas($this->app, $this->client, $this->defaultGraphVersion);
     }
 
     /**
      * Returns the page tab helper.
+     *
+     * @throws SDKException
      */
-    public function getPageTabHelper(): FacebookPageTabHelper
+    public function getPageTabHelper(): PageTab
     {
-        return new FacebookPageTabHelper($this->app, $this->client, $this->defaultGraphVersion);
+        return new PageTab($this->app, $this->client, $this->defaultGraphVersion);
     }
 
     /**

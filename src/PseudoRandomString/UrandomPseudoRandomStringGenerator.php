@@ -3,6 +3,6 @@
 namespace One23\GraphSdk\PseudoRandomString;
 
 /** @deprecated  */
-class UrandomPseudoRandomStringGenerator extends Generators\UrandomGenerator
+class UrandomPseudoRandomStringGenerator extends Generators\Urandom
 {
 }
