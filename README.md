@@ -131,30 +131,32 @@ This repository fork from deprecate [facebook/graph-sdk](https://github.com/face
 ## Usage
 
 ```php
-use \One23\GraphSdk\Facebook;
+use \One23\GraphSdk;
 
-$fb = new Facebook([
+$fb = new GraphSdk\Facebook([
   'app_id' => '{app-id}',
   'app_secret' => '{app-secret}',
   'default_graph_version' => 'v15.0',
   //'default_access_token' => '{access-token}', // optional
 ]);
 
-// Use one of the helper classes to get a Facebook\Authentication\AccessToken entity.
+// Use one of the helper classes to get a GraphSdk\Authentication\AccessToken entity.
 //   $helper = $fb->getRedirectLoginHelper();
 //   $helper = $fb->getJavaScriptHelper();
 //   $helper = $fb->getCanvasHelper();
 //   $helper = $fb->getPageTabHelper();
 
 try {
-  // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+  // Get the GraphSdk\GraphNodes\GraphUser object for the current user.
   // If you provided a 'default_access_token', the '{access-token}' is optional.
   $response = $fb->get('/me', '{access-token}');
-} catch(\Facebook\Exceptions\ResponseException $e) {
+} 
+catch(GraphSdk\Exceptions\ResponseException $e) {
   // When Graph returns an error
   echo 'Graph returned an error: ' . $e->getMessage();
   exit;
-} catch(\Facebook\Exceptions\SDKException $e) {
+} 
+catch(GraphSdk\Exceptions\SDKException $e) {
   // When validation fails or other local issues
   echo 'Facebook SDK returned an error: ' . $e->getMessage();
   exit;
@@ -167,3 +169,7 @@ echo 'Logged in as ' . $me->getName();
 # Security
 
 If you discover any security related issues, please email eugene@krivoruchko.info instead of using the issue tracker.
+
+## License
+
+[MIT](https://github.com/FlexIDK/php-8-graph-sdk/blob/master/LICENSE)
