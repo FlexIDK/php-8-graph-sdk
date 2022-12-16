@@ -3,7 +3,7 @@
     "type": "library",
     "homepage": "https://github.com/FlexIDK/php-8-graph-sdk",
     "description": "Facebook SDK for PHP 8",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "keywords": [
         "facebook",
