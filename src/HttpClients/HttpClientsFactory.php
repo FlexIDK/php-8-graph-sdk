@@ -15,8 +15,7 @@ class HttpClientsFactory
     /**
      * HTTP client generation.
      *
-     * @throws Exception
-     * @throws InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public static function createHttpClient(Clients\Guzzle|Client|string $handler = null): Clients\ClientInterface
     {

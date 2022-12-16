@@ -2,6 +2,7 @@
 
 namespace One23\GraphSdk\FileUpload;
 
+use One23\GraphSdk\Authentication\AccessToken;
 use One23\GraphSdk\Exceptions\ResponseException;
 use One23\GraphSdk\Exceptions\ResumableUploadException;
 use One23\GraphSdk\Exceptions\SDKException;
@@ -14,8 +15,8 @@ class ResumableUploader
     public function __construct(
         protected App $app,
         protected Client $client,
-        protected $accessToken,
-        protected $graphVersion
+        protected AccessToken|string $accessToken,
+        protected string $graphVersion
     ) {
     }
 

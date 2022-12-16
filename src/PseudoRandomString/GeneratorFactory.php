@@ -14,7 +14,7 @@ class GeneratorFactory
     /**
      * Pseudo random string generator creation.
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|SDKException
      */
     public static function createPseudoRandomStringGenerator(Generators\GeneratorInterface|string $generator = null): Generators\GeneratorInterface
     {

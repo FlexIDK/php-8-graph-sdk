@@ -20,7 +20,7 @@ class Request
     /**
      * The access token to use for this request.
      */
-    protected ?string $accessToken = null;
+    protected AccessToken|string $accessToken;
 
     /**
      * The HTTP method for this request.
@@ -61,29 +61,35 @@ class Request
      * @throws SDKException
      */
     public function __construct(
-        App $app = null,
-        string $accessToken = null,
-        string $method = null,
-        string $endpoint = null,
+        App $app,
+        AccessToken|string $accessToken,
+        string $method,
+        string $endpoint,
         array $params = [],
         string $eTag = null,
         string $graphVersion = null
     ) {
         $this->setApp($app);
-        $this->setAccessToken($accessToken);
+
+        if ($accessToken) {
+            $this->setAccessToken($accessToken);
+        }
+
         $this->setMethod($method);
         $this->setEndpoint($endpoint);
         $this->setParams($params);
-        $this->setETag($eTag);
+        $this->setETag(
+            $eTag ?: ""
+        );
         $this->graphVersion = $graphVersion ?: Facebook::DEFAULT_GRAPH_VERSION;
     }
 
     /**
      * Sets the eTag value.
      */
-    public function setETag(string $eTag = null): static
+    public function setETag(string $eTag): static
     {
-        $this->eTag = $eTag ?: "";
+        $this->eTag = $eTag;
 
         return $this;
     }
@@ -111,13 +117,13 @@ class Request
      */
     public function getAccessToken(): ?string
     {
-        return $this->accessToken;
+        return $this->accessToken ?? null;
     }
 
     /**
      * Set the access token for this request.
      */
-    public function setAccessToken(AccessToken|string $accessToken = null): static
+    public function setAccessToken(AccessToken|string $accessToken): static
     {
         if ($accessToken instanceof AccessToken) {
             $this->accessToken = $accessToken->getValue();
@@ -140,7 +146,7 @@ class Request
     /**
      * Set the App entity used for this request.
      */
-    public function setApp(App $app = null): static
+    public function setApp(App $app): static
     {
         $this->app = $app;
 
@@ -303,9 +309,9 @@ class Request
     /**
      * Set the HTTP method for this request.
      */
-    public function setMethod(string $method = null): static
+    public function setMethod(string $method): static
     {
-        $this->method = $method ? strtoupper($method) : 'GET';
+        $this->method = strtoupper($method);
 
         return $this;
     }
@@ -365,7 +371,7 @@ class Request
      */
     public function getAccessTokenEntity(): ?AccessToken
     {
-        return $this->accessToken
+        return isset($this->accessToken)
             ? new AccessToken($this->accessToken)
             : null;
     }
@@ -430,7 +436,7 @@ class Request
     public function getEndpoint(): string
     {
         // For batch requests, this will be empty
-        return $this->endpoint ?: "";
+        return $this->endpoint;
     }
 
     /**
@@ -438,7 +444,7 @@ class Request
      *
      * @throws SDKException
      */
-    public function setEndpoint(string $endpoint = null): static
+    public function setEndpoint(string $endpoint): static
     {
         if (!$endpoint) {
             return $this;

@@ -49,27 +49,27 @@ class Facebook
     /**
      * The URL detection handler.
      */
-    protected ?Url\DetectionInterface $urlDetectionHandler;
+    protected Url\DetectionInterface $urlDetectionHandler;
 
     /**
      * The cryptographically secure pseudo-random string generator.
      */
-    protected ?GeneratorInterface $pseudoRandomStringGenerator;
+    protected GeneratorInterface $pseudoRandomStringGenerator;
 
     /**
      * The default access token to use with requests.
      */
-    protected ?AccessToken $defaultAccessToken;
+    protected AccessToken $defaultAccessToken;
 
     /**
      * The default Graph version we want to use.
      */
-    protected ?string $defaultGraphVersion = null;
+    protected string $defaultGraphVersion;
 
     /**
      * The persistent data handler.
      */
-    protected ?PersistentDataInterface $persistentDataHandler = null;
+    protected PersistentDataInterface $persistentDataHandler;
 
     /**
      * Stores the last request made to Graph.
@@ -77,7 +77,7 @@ class Facebook
     protected Response|BatchResponse|null $lastResponse = null;
 
     /**
-     * @throws SDKException
+     * @throws SDKException|\Exception
      */
     public function __construct(array $config = [])
     {
@@ -151,7 +151,7 @@ class Facebook
     /**
      * Returns the default AccessToken entity.
      */
-    public function getDefaultAccessToken(): ?AccessToken
+    public function getDefaultAccessToken(): AccessToken
     {
         return $this->defaultAccessToken;
     }
@@ -304,6 +304,8 @@ class Facebook
 
     /**
      * Instantiates a new Request entity.
+     *
+     * @throws SDKException
      */
     public function request(
         string $method,
@@ -440,6 +442,8 @@ class Facebook
 
     /**
      * Instantiates an empty BatchRequest entity.
+     *
+     * @throws SDKException
      */
     public function newBatchRequest(
         AccessToken|string $accessToken = null,

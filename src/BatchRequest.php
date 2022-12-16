@@ -25,9 +25,9 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
      * @throws SDKException
      */
     public function __construct(
-        App $app = null,
-        array $requests = [],
-        AccessToken|string $accessToken = null,
+        App $app,
+        array $requests,
+        AccessToken|string $accessToken,
         string $graphVersion = null
     )
     {
@@ -103,14 +103,13 @@ class BatchRequest extends Request implements IteratorAggregate, ArrayAccess
             if (!$accessToken) {
                 throw new SDKException('Missing access token on Request and no fallback detected on BatchRequest.');
             }
+
             $request->setAccessToken($accessToken);
         }
     }
 
     /**
      * Extracts the files from a request.
-     *
-     * @throws SDKException
      */
     public function extractFileAttachments(Request $request): ?string
     {
