@@ -24,7 +24,7 @@ use One23\GraphSdk\Exceptions\SDKException;
 
 class Facebook
 {
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
     const DEFAULT_GRAPH_VERSION = 'v15.0';
 
     const APP_ID_ENV_NAME = 'FACEBOOK_APP_ID';
